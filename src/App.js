@@ -13,15 +13,14 @@ const getDesignTokens = (mode) => ({
 		mode,
 		...(mode === 'light'
 			? {
-				background: {
-					default: '#BAD',
-					paper: '#A9C'
-				}
 			}
 			: {
+				primary: {
+					main: '#FFF',
+					contrastText: '#1976d2'
+				},
 				background: {
-					default: '#527',
-					paper: '#527'
+					default: '#0b192a',
 				}
 			})
 	}
