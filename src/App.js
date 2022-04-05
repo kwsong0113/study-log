@@ -6,6 +6,8 @@ import Topbar from './components/Topbar';
 import Header from './components/Header';
 import StudyLog from './components/StudyLog';
 
+
+export const drawerWidth = 200;
 export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 const getDesignTokens = (mode) => ({
@@ -13,17 +15,27 @@ const getDesignTokens = (mode) => ({
 		mode,
 		...(mode === 'light'
 			? {
+				border: {
+					main: '#e4e4e4'
+				}
 			}
 			: {
 				primary: {
-					main: '#FFF',
+					main: '#fff',
 					contrastText: '#1976d2'
 				},
 				background: {
 					default: '#0b192a',
+				},
+				border: {
+					main: '#353553'
 				}
 			})
-	}
+	},
+	breakpoints: {
+    keys: ["xs", "sm", "smd", "md", "lg", "xl"],
+    values: { xs: 0, sm: 600, smd: 700, md: 900, lg: 1200, xl: 1536 }
+  }
 });
 
 const App = () => {
@@ -42,7 +54,7 @@ const App = () => {
 			<ThemeProvider theme = {theme}>
 				<CssBaseline />
 				<Topbar />
-				<Box>
+				<Box sx = {{ display: 'flex', flexDirection: 'column' }}>
 					<Header />
 					<StudyLog />
 				</Box>

@@ -30,11 +30,11 @@ const ColorModeButton = () => {
 
 const Topbar = () => {
 	return (
-		<AppBar position = "static">
+		<AppBar position = "relative" sx = {{ boxShadow: 'none', zIndex: (theme) => (theme.zIndex.drawer + 1) }}>
 			<Toolbar sx = {{ display: 'flex', justifyContent: 'space-between', bgcolor: 'primary.main', color: "primary.contrastText" }}>
 				<Box sx = {{ display: 'flex', alignItems: 'center' }}>
 					<NoteAltIcon fontSize = "large" />
-					<Box sx = {{ display: 'flex', flexDirection: 'column', justifyContent: 'center', px: 2 }}>
+					<Box sx = {{ display: ['none', 'flex'], flexDirection: 'column', justifyContent: 'center', px: 2 }}>
 						<Typography variant = "body2">
 							Kiwhan Song
 						</Typography>
@@ -42,15 +42,15 @@ const Topbar = () => {
 							helloing-develop@gmail.com
 						</Typography>
 					</Box>
-					<Divider orientation = "vertical" variant = "fullWidth" flexItem sx = {{ borderColor: 'primary.contrastText' }}/>
+					<Divider orientation = "vertical" variant = "fullWidth" flexItem sx = {{ display: ['none', 'flex'], borderColor: 'primary.contrastText' }}/>
 				</Box>
 				<Box sx = {{ display: 'flex' }}>
 					<Typography variant = "caption"
 						sx = {{
-							display: {'xs': 'none', 'md': 'flex'},
+							display: {'xs': 'none', 'lg': 'flex'},
 							alignItems: 'center',
 							border: 'solid 1px',
-							borderColor: (theme) => alpha(theme.palette.grey[300], theme.palette.mode === 'dark' ? 1.0 : 0.3),
+							borderColor: 'border.main',
 							borderRadius: 3,
 							bgcolor: '#AAA2',
 							px: 2,
@@ -60,13 +60,15 @@ const Topbar = () => {
 						Record your study, Share your knowledge
 					</Typography>
 					<Search />
-					<StyledIconButton>
-						<AddLinkIcon fontSize = "small"/>
-					</StyledIconButton>
-					<StyledIconButton>
-						<OpacityOutlinedIcon fontSize = "small"/>
-					</StyledIconButton>
-					<ColorModeButton />
+					<Box sx = {{ display: ['none', 'flex'] }}>
+						<StyledIconButton>
+							<AddLinkIcon fontSize = "small"/>
+						</StyledIconButton>
+						<StyledIconButton>
+							<OpacityOutlinedIcon fontSize = "small"/>
+						</StyledIconButton>
+						<ColorModeButton />
+					</Box>
 				</Box>
 			</Toolbar>
 		</AppBar>
