@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -15,6 +15,7 @@ import AddLinkIcon from '@mui/icons-material/AddLink';
 import { ColorModeContext } from '../App';
 import StyledIconButton from './StyledIconButton';
 import Search from './Search';
+import ThemeDialog from './ThemeDialog';
 
 const ColorModeButton = () => {
 	const theme = useTheme();
@@ -28,7 +29,18 @@ const ColorModeButton = () => {
 	);
 };
 
-const Topbar = () => {
+const Topbar = ({ themeValue, setThemeValue }) => {
+	const [dialogOpen, setDialogOpen] = useState(false);
+
+	const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = (themeValue) => {
+    setDialogOpen(false);
+    setThemeValue(themeValue);
+  };
+
 	return (
 		<AppBar position = "relative" sx = {{ boxShadow: 'none', zIndex: (theme) => (theme.zIndex.drawer + 1) }}>
 			<Toolbar sx = {{ display: 'flex', justifyContent: 'space-between', bgcolor: 'primary.main', color: "primary.contrastText" }}>
@@ -50,7 +62,7 @@ const Topbar = () => {
 							display: {'xs': 'none', 'lg': 'flex'},
 							alignItems: 'center',
 							border: 'solid 1px',
-							borderColor: 'border.main',
+							borderColor: (theme) => alpha(theme.palette.grey[300], theme.palette.mode === 'dark' ? 1.0 : 0.3),
 							borderRadius: 3,
 							bgcolor: '#AAA2',
 							px: 2,
@@ -64,9 +76,10 @@ const Topbar = () => {
 						<StyledIconButton>
 							<AddLinkIcon fontSize = "small"/>
 						</StyledIconButton>
-						<StyledIconButton>
+						<StyledIconButton onClick = {handleClickOpen}>
 							<OpacityOutlinedIcon fontSize = "small"/>
 						</StyledIconButton>
+						<ThemeDialog onClose = {handleClose} open = {dialogOpen} themeValue = {themeValue}/>
 						<ColorModeButton />
 					</Box>
 				</Box>
