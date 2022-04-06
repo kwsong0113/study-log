@@ -4,7 +4,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Topbar from './components/Topbar';
 import Header from './components/Header';
-import StudyLog from './components/StudyLog';
+import Content from './components/Content';
 
 
 export const drawerWidth = 200;
@@ -28,7 +28,7 @@ const getDesignTokens = (mode) => ({
 					default: '#0b192a',
 				},
 				border: {
-					main: '#353553'
+					main: '#283545'
 				}
 			})
 	},
@@ -53,10 +53,10 @@ const App = () => {
 		<ColorModeContext.Provider value = {colorMode}>
 			<ThemeProvider theme = {theme}>
 				<CssBaseline />
-				<Topbar />
-				<Box sx = {{ display: 'flex', flexDirection: 'column' }}>
+				<Box sx = {{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+					<Topbar />
 					<Header />
-					<StudyLog />
+					<Content />
 				</Box>
 		  </ThemeProvider>
 	  </ColorModeContext.Provider>

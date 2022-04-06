@@ -10,7 +10,6 @@ import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import { alpha } from '@mui/material/styles';
 import StyledIconButton from './StyledIconButton';
 import LeftDrawer from './LeftDrawer';
-import StudyLog from './StudyLog';
 import { drawerWidth } from '../App';
 
 const Header = () => {
