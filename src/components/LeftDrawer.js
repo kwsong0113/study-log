@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useMemo } from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Divider from '@mui/material/Divider';
@@ -16,23 +16,42 @@ import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 
 import { styled } from '@mui/material/styles';
 
-const list = [
-  [
-    { label: 'Study Log', icon: <SummarizeOutlinedIcon fontSize = "small" /> },
-    { label: 'Study Note', icon: <NoteAltOutlinedIcon fontSize = "small" /> },
-    { label: 'Planner', icon: <EventAvailableOutlinedIcon fontSize = "small" /> },
-  ],
-  [
-    { label: 'Community', icon: <LanguageOutlinedIcon fontSize = "small" /> },
-    { label: 'Share', icon: <IosShareOutlinedIcon fontSize = "small" /> },
-  ],
-  [
-    { label: 'Setting', icon: <SettingsOutlinedIcon fontSize = "small" /> },
-  ]
-];
+import { ThemeModeContext } from '../App';
+import ThemeModeDialog from './ThemeModeDialog';
+
 
 
 const LeftDrawer = ({ always }) => {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
+  const themeModeContext = useContext(ThemeModeContext);
+
+  const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
+  const list = useMemo(() => ([
+    [
+      { label: 'Study Log', icon: <SummarizeOutlinedIcon fontSize = "small" /> },
+      { label: 'Study Note', icon: <NoteAltOutlinedIcon fontSize = "small" /> },
+      { label: 'Planner', icon: <EventAvailableOutlinedIcon fontSize = "small" /> },
+    ],
+    [
+      { label: 'Community', icon: <LanguageOutlinedIcon fontSize = "small" /> },
+      { label: 'Share', icon: <IosShareOutlinedIcon fontSize = "small" /> },
+    ],
+    [
+      {
+        label: 'Setting', icon: <SettingsOutlinedIcon fontSize = "small" />,
+        onClick: handleClickOpen
+      },
+    ]
+  ]), []);
+
   return (
     <Box>
       <Toolbar />
@@ -43,8 +62,8 @@ const LeftDrawer = ({ always }) => {
             <Divider variant = "middle" />
             <List>
               {
-                subList.map(({ label, icon }) => (
-                  <ListItem button key={label} disableRipple>
+                subList.map(({ label, icon, onClick }) => (
+                  <ListItem button key={label} disableRipple onClick = {onClick} >
                     <ListItemIcon sx = {{ minWidth: '40px' }}>
                       {icon}
                     </ListItemIcon>
@@ -56,6 +75,7 @@ const LeftDrawer = ({ always }) => {
           </React.Fragment>
         ))
       }
+      <ThemeModeDialog onClose = {handleClose} open = {dialogOpen} canToggleMode = {true}/>
     </Box>
   );
 };

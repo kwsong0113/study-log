@@ -9,7 +9,7 @@ import CustomThemePalette from './components/CustomThemePalette';
 
 
 export const drawerWidth = 200;
-export const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+export const ThemeModeContext = React.createContext({});
 const themeValue = 'red';
 
 const getDesignTokens = (mode, themeValue) => ({
@@ -27,25 +27,21 @@ const App = () => {
 	const [mode, setMode] = useState('light');
 	const [themeValue, setThemeValue] = useState('blue');
 
-	const colorMode = useMemo(() => ({
-		toggleColorMode: () => {
-			setMode((prevMode) => prevMode === 'light' ? 'dark' : 'light');
-		}
-	}));
+	const setThemeMode = {setMode, setThemeValue};
 
 	const theme = useMemo(() => createTheme(getDesignTokens(mode, themeValue)), [mode, themeValue]);
 
 	return (
-		<ColorModeContext.Provider value = {colorMode}>
+		<ThemeModeContext.Provider value = {{ mode, themeValue, setThemeMode }}>
 			<ThemeProvider theme = {theme}>
 				<CssBaseline />
 				<Box sx = {{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-					<Topbar themeValue = {themeValue} setThemeValue = {setThemeValue} />
+					<Topbar />
 					<Header />
 					<Content />
 				</Box>
 		  </ThemeProvider>
-	  </ColorModeContext.Provider>
+	  </ThemeModeContext.Provider>
 	);
 };
 

@@ -12,33 +12,38 @@ import DarkModeIcon from '@mui/icons-material/DarkModeOutlined';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import OpacityOutlinedIcon from '@mui/icons-material/OpacityOutlined';
 import AddLinkIcon from '@mui/icons-material/AddLink';
-import { ColorModeContext } from '../App';
+import { ThemeModeContext } from '../App';
 import StyledIconButton from './StyledIconButton';
 import Search from './Search';
-import ThemeDialog from './ThemeDialog';
+import ThemeModeDialog from './ThemeModeDialog';
 
 const ColorModeButton = () => {
 	const theme = useTheme();
-	const colorMode = useContext(ColorModeContext);
+	const themeModeContext = useContext(ThemeModeContext);
+	const toggleMode = () => {
+		themeModeContext.setThemeMode.setMode((previousMode) => 
+			previousMode === 'dark' ? 'light' : 'dark'
+		);
+	};
+
 	return (
-		<StyledIconButton
-			onClick = {colorMode.toggleColorMode}
-		>
+		<StyledIconButton onClick = {toggleMode}>
 			{theme.palette.mode === 'dark' ? <LightModeIcon fontSize = "small"/> : <DarkModeIcon fontSize = "small"/>}
 		</StyledIconButton>
 	);
 };
 
-const Topbar = ({ themeValue, setThemeValue }) => {
+const Topbar = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
+
+	const themeModeContext = useContext(ThemeModeContext);
 
 	const handleClickOpen = () => {
     setDialogOpen(true);
   };
 
-  const handleClose = (themeValue) => {
+  const handleClose = () => {
     setDialogOpen(false);
-    setThemeValue(themeValue);
   };
 
 	return (
@@ -79,7 +84,7 @@ const Topbar = ({ themeValue, setThemeValue }) => {
 						<StyledIconButton onClick = {handleClickOpen}>
 							<OpacityOutlinedIcon fontSize = "small"/>
 						</StyledIconButton>
-						<ThemeDialog onClose = {handleClose} open = {dialogOpen} themeValue = {themeValue}/>
+						<ThemeModeDialog onClose = {handleClose} open = {dialogOpen} canToggleMode = {false} />
 						<ColorModeButton />
 					</Box>
 				</Box>
