@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo, createRef } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -9,10 +9,11 @@ import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutl
 import { styled } from '@mui/material/styles';
 import { drawerWidth } from '../App';
 import StudyLog from './StudyLog';
+import DatePickerDialog from './DatePickerDialog';
 
 const data = [
 	{
-		date: '03/29/22',
+		date: '03/29/2022',
 		subjects: ['Android + OpenCV', 'ReactJS + MUI'],
 		content: [
 			{
@@ -32,7 +33,7 @@ const data = [
 		]
 	},
 	{
-		date: '03/30/22',
+		date: '03/30/2022',
 		subjects: ['Android + OpenCV', 'ReactJS + MUI'],
 		content: [
 			{
@@ -52,7 +53,7 @@ const data = [
 		]
 	},
 	{
-		date: '03/31/22',
+		date: '03/31/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -81,7 +82,7 @@ const data = [
 		]
 	},
 	{
-		date: '04/01/22',
+		date: '04/01/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -110,7 +111,7 @@ const data = [
 		]
 	},
 	{
-		date: '04/02/22',
+		date: '04/02/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -139,7 +140,7 @@ const data = [
 		]
 	},
 	{
-		date: '04/03/22',
+		date: '04/03/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -168,7 +169,7 @@ const data = [
 		]
 	},
 	{
-		date: '04/04/22',
+		date: '04/04/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -197,7 +198,7 @@ const data = [
 		]
 	},
 	{
-		date: '04/05/22',
+		date: '04/05/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -226,7 +227,7 @@ const data = [
 		]
 	},
 	{
-		date: '04/06/22',
+		date: '04/06/2022',
 		subjects: ['ReactJS', 'Material-UI'],
 		content: [
 			{
@@ -277,11 +278,42 @@ const StyledButton = styled((props) => (
 }));
 
 const Content = () => {
+	const [dialogOpen, setDialogOpen] = useState(false);
+
+	const [refDict, setRefDict] = useState({});
+
+	useEffect(() => {
+		for (const { date } of data) {
+			const newRef = createRef();
+			setRefDict((prevRefDict) => ({...prevRefDict, [date]: newRef}));
+		}
+	}, [data]);
+
+	const minDate = useMemo(() => (data.length ? new Date(data[0].date) : new Date()), [data]);
+
+	const handleClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleClose = () => {
+    setDialogOpen(false);
+  };
+
+  const onDateChange = (date) => {
+  	const formattedDate = date.toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric'});
+  	refDict[formattedDate]?.current?.scrollIntoView({block: 'start', behavior: 'smooth'});
+  };
+
+  const shouldDisableDate = (date) => {
+  	const formattedDate = date.toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric'});
+  	return !(formattedDate in refDict);
+  }
+
 	return (
 		<Box sx = {{ ml: [0, `${drawerWidth}px`], overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
 			<Grid container spacing = {2} sx = {{ p: 3 }}>
 				<Grid item xs = {12} smd = {6} lg = {4}>
-					<StyledButton >
+					<StyledButton onClick = {handleClickOpen}>
 						<Box display = "flex" sx = {{ alignItems: 'center' }} >
 							<CalendarMonthOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
 							Select Date
@@ -301,13 +333,14 @@ const Content = () => {
 				<Grid container spacing = {2} sx = {{ px: 3, pb: 3 }}>
 					{
 						data.map((dailyData) => (
-							<Grid key = {dailyData.date} item xs = {12} smd = {6} lg = {4}>
+							<Grid ref = {refDict[dailyData.date]} key = {dailyData.date} item xs = {12} smd = {6} lg = {4}>
 								<StudyLog data = {dailyData} />
 							</Grid> 
 						))
 					}
 				</Grid>
 			</Box>
+			<DatePickerDialog open = {dialogOpen} onClose = {handleClose} onDateChange = {onDateChange} shouldDisableDate = {shouldDisableDate} minDate = {minDate}/>
 		</Box>
 	);
 };
