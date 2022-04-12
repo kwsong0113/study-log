@@ -1,5 +1,4 @@
-import React, { useState, useContext, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useMemo, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,22 +9,18 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
-import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
 import LanguageOutlinedIcon from '@mui/icons-material/LanguageOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import IosShareOutlinedIcon from '@mui/icons-material/IosShareOutlined';
 
-import { styled } from '@mui/material/styles';
-
-import { ThemeModeContext } from '../App';
 import ThemeModeDialog from './ThemeModeDialog';
 import StyledLink from './StyledLink';
+import { UserDataContext } from './UserDataProvider';
 
 const LeftDrawer = ({ always }) => {
+  const { username } = useContext(UserDataContext);
   const [dialogOpen, setDialogOpen] = useState(false);
-
-  const themeModeContext = useContext(ThemeModeContext);
 
   const handleClickOpen = () => {
     setDialogOpen(true);
@@ -37,11 +32,11 @@ const LeftDrawer = ({ always }) => {
 
   const list = useMemo(() => ([
     [
-      { label: 'Study Log', icon: <SummarizeOutlinedIcon fontSize = "small" />, link: "/studylog/helloing-develop" },
-      { label: 'Todos', icon: <EventAvailableOutlinedIcon fontSize = "small" />, link: "/todos/helloing-develop" },
+      { label: 'Study Log', icon: <SummarizeOutlinedIcon fontSize = "small" />, link: username ? `/studylog/${username}` : '/pleasesignin' },
+      { label: 'Todos', icon: <EventAvailableOutlinedIcon fontSize = "small" />, link: username ? `/todos/${username}` : '/pleasesignin' },
     ],
     [
-      { label: 'Community', icon: <LanguageOutlinedIcon fontSize = "small" />, link: "/community" },
+      { label: 'Community', icon: <LanguageOutlinedIcon fontSize = "small" />, link: '/community' },
       { label: 'Share', icon: <IosShareOutlinedIcon fontSize = "small" /> },
     ],
     [
@@ -50,7 +45,7 @@ const LeftDrawer = ({ always }) => {
         onClick: handleClickOpen
       },
     ]
-  ]), []);
+  ]), [username]);
 
   return (
     <Box>

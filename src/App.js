@@ -8,17 +8,18 @@ import Box from '@mui/material/Box';
 import Topbar from './components/Topbar';
 import Header from './components/Header';
 import CustomThemePalette from './components/CustomThemePalette';
+import UserDataProvider from './components/UserDataProvider';
 
 import HomePage from './pages/HomePage';
 import CommunityPage from './pages/CommunityPage';
 import StudyLogPage from './pages/StudyLogPage';
 import TodosPage from './pages/TodosPage';
 import ErrorPage from './pages/ErrorPage';
+import PleaseSignInPage from './pages/PleaseSignInPage';
 
 
 export const drawerWidth = 200;
 export const ThemeModeContext = React.createContext({});
-const themeValue = 'red';
 
 const getDesignTokens = (mode, themeValue) => ({
 	palette: {
@@ -52,23 +53,26 @@ const App = () => {
 	const theme = useMemo(() => createTheme(getDesignTokens(mode, themeValue)), [mode, themeValue]);
 
 	return (
-		<ThemeModeContext.Provider value = {{ mode, themeValue, setThemeMode }}>
-			<ThemeProvider theme = {theme}>
-				<CssBaseline />
-				<Router>
-					<Routes>
-						<Route path = "/*" element = {<LayoutWithNavbar />}>
-							<Route path = "studylog/:id" element = {<StudyLogPage />} />
-							<Route path = "community" element = {<CommunityPage />} />
-							<Route path = "todos/:id" element = {<TodosPage />} />
-							{/*<Route path = "*" element = {<Navigate replace to = "/" />} />*/}
-							<Route path = "*" element = {<ErrorPage />} />
-						</Route>
-						<Route path = "/" element = {<HomePage />} />
-					</Routes>
-				</Router>
-		  </ThemeProvider>
-	  </ThemeModeContext.Provider>
+		<UserDataProvider>
+			<ThemeModeContext.Provider value = {{ mode, themeValue, setThemeMode }}>
+				<ThemeProvider theme = {theme}>
+					<CssBaseline />
+					<Router>
+						<Routes>
+							<Route path = "/*" element = {<LayoutWithNavbar />}>
+								<Route path = "studylog/:id" element = {<StudyLogPage />} />
+								<Route path = "todos/:id" element = {<TodosPage />} />
+								<Route path = "community" element = {<CommunityPage />} />
+								<Route path = "pleasesignin" element = {<PleaseSignInPage />} />
+								{/*<Route path = "*" element = {<Navigate replace to = "/" />} />*/}
+								<Route path = "*" element = {<ErrorPage />} />
+							</Route>
+							<Route path = "/" element = {<HomePage />} />
+						</Routes>
+					</Router>
+			  </ThemeProvider>
+		  </ThemeModeContext.Provider>
+	  </UserDataProvider>
 	);
 };
 

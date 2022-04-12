@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo, createRef } from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
@@ -311,7 +310,7 @@ const StudyLogPage = () => {
 	return (
 		<>
 			<Grid container spacing = {2} sx = {{ p: 3 }}>
-				<Grid item xs = {12} smd = {6} lg = {4}>
+				<Grid item xs = {12} smd = {6} lg = {4} xl = {3}>
 					<StyledButton onClick = {handleClickOpen}>
 						<Box display = "flex" sx = {{ alignItems: 'center' }} >
 							<CalendarMonthOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
@@ -319,7 +318,7 @@ const StudyLogPage = () => {
 						</Box>
 					</StyledButton>
 				</Grid>
-				<Grid item xs = {12} smd = {6} lg = {4}>
+				<Grid item xs = {12} smd = {6} lg = {4} xl = {3}>
 					<StyledButton>
 						<Box display = "flex" sx = {{ alignItems: 'center' }}>
 							<PsychologyOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
@@ -332,7 +331,7 @@ const StudyLogPage = () => {
 				<Grid container spacing = {2} sx = {{ px: 3, pb: 3 }}>
 					{
 						data.map((dailyData) => (
-							<Grid ref = {refDict[dailyData.date]} key = {dailyData.date} item xs = {12} smd = {6} lg = {4}>
+							<Grid ref = {refDict[dailyData.date]} key = {dailyData.date} item xs = {12} smd = {6} lg = {4} xl = {3}>
 								<StudyLog data = {dailyData} />
 							</Grid> 
 						))

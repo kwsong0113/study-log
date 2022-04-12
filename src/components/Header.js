@@ -1,13 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
 import Drawer from '@mui/material/Drawer';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-import { alpha } from '@mui/material/styles';
 import StyledIconButton from './StyledIconButton';
 import LeftDrawer from './LeftDrawer';
 import { drawerWidth } from '../App';

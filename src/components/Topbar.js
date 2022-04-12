@@ -1,23 +1,25 @@
 import React, { useState, useContext } from 'react';
+import { useAuth0 } from '@auth0/auth0-react';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
 import { useTheme, alpha } from '@mui/material/styles';
+
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined';
 import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import OpacityOutlinedIcon from '@mui/icons-material/OpacityOutlined';
 import AddLinkIcon from '@mui/icons-material/AddLink';
+
 import { ThemeModeContext } from '../App';
 import StyledIconButton from './StyledIconButton';
 import Search from './Search';
 import ThemeModeDialog from './ThemeModeDialog';
 import StyledLink from './StyledLink';
+import { UserDataContext } from './UserDataProvider';
 
 const ColorModeButton = () => {
 	const themeModeContext = useContext(ThemeModeContext);
@@ -36,9 +38,9 @@ const ColorModeButton = () => {
 };
 
 const Topbar = () => {
+	const { user } = useAuth0();
+	const { username } = useContext(UserDataContext);
 	const [dialogOpen, setDialogOpen] = useState(false);
-
-	const themeModeContext = useContext(ThemeModeContext);
 
 	const handleClickOpen = () => {
     setDialogOpen(true);
@@ -57,10 +59,10 @@ const Topbar = () => {
 					</StyledLink>
 					<Box sx = {{ display: ['none', 'flex'], flexDirection: 'column', justifyContent: 'center', px: 2 }}>
 						<Typography variant = "body2">
-							Kiwhan Song
+							{username || 'Visitor'}
 						</Typography>
 						<Typography variant = "caption" noWrap sx = {{ width: '137.02px', fontSize: 10 }} >
-							kiwhan@mit.edu
+							{user?.email || 'Sign in to record your study'}
 						</Typography>
 					</Box>
 					<Divider orientation = "vertical" variant = "fullWidth" flexItem sx = {{ display: ['none', 'flex'], borderColor: 'primary.contrastText' }}/>

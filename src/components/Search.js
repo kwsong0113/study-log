@@ -13,7 +13,6 @@ const Search = () => {
 				display: 'flex',
 				alignItems: 'center',
 				border: '1px solid',
-				border: 'solid 1px',
 				borderColor: (theme) => alpha(theme.palette.grey[300], theme.palette.mode === 'dark' ? 1.0 : 0.3),
 				borderRadius: 3,
 				ml: 2,
