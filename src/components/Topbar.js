@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -16,10 +17,11 @@ import { ThemeModeContext } from '../App';
 import StyledIconButton from './StyledIconButton';
 import Search from './Search';
 import ThemeModeDialog from './ThemeModeDialog';
+import StyledLink from './StyledLink';
 
 const ColorModeButton = () => {
-	const theme = useTheme();
 	const themeModeContext = useContext(ThemeModeContext);
+	const theme = useTheme();
 	const toggleMode = () => {
 		themeModeContext.setThemeMode.setMode((previousMode) => 
 			previousMode === 'dark' ? 'light' : 'dark'
@@ -50,32 +52,36 @@ const Topbar = () => {
 		<AppBar position = "relative" sx = {{ boxShadow: 'none', zIndex: (theme) => (theme.zIndex.drawer + 1) }}>
 			<Toolbar sx = {{ display: 'flex', justifyContent: 'space-between', bgcolor: 'primary.main', color: "primary.contrastText" }}>
 				<Box sx = {{ display: 'flex', alignItems: 'center' }}>
-					<NoteAltIcon fontSize = "large" />
+					<StyledLink to = "/">
+						<NoteAltIcon fontSize = "large" />
+					</StyledLink>
 					<Box sx = {{ display: ['none', 'flex'], flexDirection: 'column', justifyContent: 'center', px: 2 }}>
 						<Typography variant = "body2">
 							Kiwhan Song
 						</Typography>
-						<Typography variant = "caption" sx = {{ fontSize: 10 }} >
-							helloing-develop@gmail.com
+						<Typography variant = "caption" noWrap sx = {{ width: '137.02px', fontSize: 10 }} >
+							kiwhan@mit.edu
 						</Typography>
 					</Box>
 					<Divider orientation = "vertical" variant = "fullWidth" flexItem sx = {{ display: ['none', 'flex'], borderColor: 'primary.contrastText' }}/>
 				</Box>
 				<Box sx = {{ display: 'flex' }}>
-					<Typography variant = "caption"
-						sx = {{
-							display: {'xs': 'none', 'lg': 'flex'},
-							alignItems: 'center',
-							border: 'solid 1px',
-							borderColor: (theme) => alpha(theme.palette.grey[300], theme.palette.mode === 'dark' ? 1.0 : 0.3),
-							borderRadius: 3,
-							bgcolor: '#AAA2',
-							px: 2,
-							height: '36px'
-						}}
-					>
-						Record your study, Share your knowledge
-					</Typography>
+					<StyledLink to = "/">
+						<Typography variant = "caption"
+							sx = {{
+								display: {'xs': 'none', 'lg': 'flex'},
+								alignItems: 'center',
+								border: 'solid 1px',
+								borderColor: (theme) => alpha(theme.palette.grey[300], theme.palette.mode === 'dark' ? 1.0 : 0.3),
+								borderRadius: 3,
+								bgcolor: '#AAA2',
+								px: 2,
+								height: '36px'
+							}}
+						>
+							Record your study, Share your knowledge
+						</Typography>
+					</StyledLink>
 					<Search />
 					<Box sx = {{ display: ['none', 'flex'] }}>
 						<StyledIconButton>

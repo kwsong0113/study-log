@@ -7,9 +7,8 @@ import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import { styled } from '@mui/material/styles';
-import { drawerWidth } from '../App';
-import StudyLog from './StudyLog';
-import DatePickerDialog from './DatePickerDialog';
+import StudyLog from '../components/StudyLog';
+import DatePickerDialog from '../components/DatePickerDialog';
 
 const data = [
 	{
@@ -277,7 +276,7 @@ const StyledButton = styled((props) => (
 	},
 }));
 
-const Content = () => {
+const StudyLogPage = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 
 	const [refDict, setRefDict] = useState({});
@@ -310,7 +309,7 @@ const Content = () => {
   }
 
 	return (
-		<Box sx = {{ ml: [0, `${drawerWidth}px`], overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+		<>
 			<Grid container spacing = {2} sx = {{ p: 3 }}>
 				<Grid item xs = {12} smd = {6} lg = {4}>
 					<StyledButton onClick = {handleClickOpen}>
@@ -329,7 +328,7 @@ const Content = () => {
 					</StyledButton>
 				</Grid>
 			</Grid>
-			<Box sx = {{ overflow: 'auto' }}>		
+			<Box sx = {{ overflow: 'scroll' }}>		
 				<Grid container spacing = {2} sx = {{ px: 3, pb: 3 }}>
 					{
 						data.map((dailyData) => (
@@ -341,8 +340,8 @@ const Content = () => {
 				</Grid>
 			</Box>
 			<DatePickerDialog open = {dialogOpen} onClose = {handleClose} onDateChange = {onDateChange} shouldDisableDate = {shouldDisableDate} minDate = {minDate}/>
-		</Box>
+		</>
 	);
 };
 
-export default Content;
+export default StudyLogPage;

@@ -1,4 +1,6 @@
 import React, { useState, useContext, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Divider from '@mui/material/Divider';
@@ -18,8 +20,7 @@ import { styled } from '@mui/material/styles';
 
 import { ThemeModeContext } from '../App';
 import ThemeModeDialog from './ThemeModeDialog';
-
-
+import StyledLink from './StyledLink';
 
 const LeftDrawer = ({ always }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -36,12 +37,11 @@ const LeftDrawer = ({ always }) => {
 
   const list = useMemo(() => ([
     [
-      { label: 'Study Log', icon: <SummarizeOutlinedIcon fontSize = "small" /> },
-      { label: 'Study Note', icon: <NoteAltOutlinedIcon fontSize = "small" /> },
-      { label: 'Planner', icon: <EventAvailableOutlinedIcon fontSize = "small" /> },
+      { label: 'Study Log', icon: <SummarizeOutlinedIcon fontSize = "small" />, link: "/studylog/helloing-develop" },
+      { label: 'Todos', icon: <EventAvailableOutlinedIcon fontSize = "small" />, link: "/todos/helloing-develop" },
     ],
     [
-      { label: 'Community', icon: <LanguageOutlinedIcon fontSize = "small" /> },
+      { label: 'Community', icon: <LanguageOutlinedIcon fontSize = "small" />, link: "/community" },
       { label: 'Share', icon: <IosShareOutlinedIcon fontSize = "small" /> },
     ],
     [
@@ -62,14 +62,23 @@ const LeftDrawer = ({ always }) => {
             <Divider variant = "middle" />
             <List>
               {
-                subList.map(({ label, icon, onClick }) => (
-                  <ListItem button key={label} disableRipple onClick = {onClick} >
-                    <ListItemIcon sx = {{ minWidth: '40px' }}>
-                      {icon}
-                    </ListItemIcon>
-                    <ListItemText primary={label} primaryTypographyProps = {{ fontSize: 12 }} sx = {{ ml: 0 }} />
-                  </ListItem>
-                ))
+                subList.map(({ label, icon, onClick, link }) => {
+                  const item = (
+                    <ListItem button disableRipple onClick = {onClick} >
+                      <ListItemIcon sx = {{ minWidth: '40px' }}>
+                        {icon}
+                      </ListItemIcon>
+                      <ListItemText primary={label} primaryTypographyProps = {{ fontSize: 12 }} sx = {{ ml: 0 }} />
+                    </ListItem>
+                  );
+                  if (link) {
+                    return (
+                      <StyledLink key = {label} to = {link}>{item}</StyledLink>
+                    );
+                  } else {
+                    return <React.Fragment key = {label}>{item}</React.Fragment>;
+                  }
+                })
               }
             </List>
           </React.Fragment>

@@ -1,11 +1,19 @@
 import React, { useState, useMemo } from 'react';
+import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
+
 import Topbar from './components/Topbar';
 import Header from './components/Header';
-import Content from './components/Content';
 import CustomThemePalette from './components/CustomThemePalette';
+
+import HomePage from './pages/HomePage';
+import CommunityPage from './pages/CommunityPage';
+import StudyLogPage from './pages/StudyLogPage';
+import TodosPage from './pages/TodosPage';
+import ErrorPage from './pages/ErrorPage';
 
 
 export const drawerWidth = 200;
@@ -23,6 +31,18 @@ const getDesignTokens = (mode, themeValue) => ({
   }
 });
 
+const LayoutWithNavbar = () => {
+	return (
+		<Box sx = {{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+			<Topbar />
+			<Header />
+			<Box sx = {{ ml: [0, `${drawerWidth}px`], overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+				<Outlet />
+			</Box>
+		</Box>
+	);
+}
+
 const App = () => {
 	const [mode, setMode] = useState('light');
 	const [themeValue, setThemeValue] = useState('blue');
@@ -35,11 +55,18 @@ const App = () => {
 		<ThemeModeContext.Provider value = {{ mode, themeValue, setThemeMode }}>
 			<ThemeProvider theme = {theme}>
 				<CssBaseline />
-				<Box sx = {{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-					<Topbar />
-					<Header />
-					<Content />
-				</Box>
+				<Router>
+					<Routes>
+						<Route path = "/*" element = {<LayoutWithNavbar />}>
+							<Route path = "studylog/:id" element = {<StudyLogPage />} />
+							<Route path = "community" element = {<CommunityPage />} />
+							<Route path = "todos/:id" element = {<TodosPage />} />
+							{/*<Route path = "*" element = {<Navigate replace to = "/" />} />*/}
+							<Route path = "*" element = {<ErrorPage />} />
+						</Route>
+						<Route path = "/" element = {<HomePage />} />
+					</Routes>
+				</Router>
 		  </ThemeProvider>
 	  </ThemeModeContext.Provider>
 	);
