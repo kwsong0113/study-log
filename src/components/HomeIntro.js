@@ -17,7 +17,7 @@ import { UserDataContext } from '../components/UserDataProvider';
 const  HOMEINTRO_CONTENTS = {
 	introMessage1: 'Record your Study,',
 	introMessage2: 'Share your Knowledge',
-	introContent: 'SLog offers various tools to help you organize study records and structuralize study plans. With SLog, record your study daily and share your study life with others.',
+	introContent: 'SLog offers various tools to help you organize study records and structuralize study plans. With SLog, record your study daily and share your study life with others. We believe that writing beautiful study logs helps you study efficiently.',
 };
 
 const HomeIntro = () => {
@@ -25,7 +25,7 @@ const HomeIntro = () => {
 	const { username } = useContext(UserDataContext);
 
 	return (
-		<Box sx = {{ py: 5 }}>
+		<Box sx = {{ py: { xs: 15, md: 0 } }}>
 			<Typography variant = "h3" sx = {{
 				fontSize: { xs: 32, sm: 40, xl: 52},
 				color: 'primary.lightMain',
