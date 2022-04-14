@@ -35,7 +35,7 @@ const getDesignTokens = (mode, themeValue) => ({
 const LayoutWithNavbar = () => {
 	return (
 		<Box sx = {{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
-			<Topbar />
+			<Topbar home = {false} />
 			<Header />
 			<Box sx = {{ ml: [0, `${drawerWidth}px`], overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
 				<Outlet />

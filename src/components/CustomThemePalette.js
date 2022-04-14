@@ -2,7 +2,8 @@ const CustomThemePalette = {
 	blue: {
 		light: {
 			primary: {
-				main: '#1976d2'
+				main: '#1976d2',
+				lightMain: '#1976d2',
 			},
 			border: {
 				main: '#e4e4e4'
@@ -11,7 +12,8 @@ const CustomThemePalette = {
 		dark: {
 			primary: {
 				main: '#ffffff',
-				contrastText: '#1976d2'
+				contrastText: '#1976d2',
+				lightMain: '#1976d2',
 			},
 			background: {
 				default: '#0b192a',
@@ -24,7 +26,8 @@ const CustomThemePalette = {
 	red: {
 		light: {
 			primary: {
-				main: '#c62828'
+				main: '#c62828',
+				lightMain: '#c62828',
 			},
 			border: {
 				main: '#e4e4e4'
@@ -33,7 +36,8 @@ const CustomThemePalette = {
 		dark: {
 			primary: {
 				main: '#ffffff',
-				contrastText: '#c62828'
+				contrastText: '#c62828',
+				lightMain: '#c62828',
 			},
 			background: {
 				default: '#3f0000',
@@ -46,7 +50,8 @@ const CustomThemePalette = {
 	deepPurple: {
 		light: {
 			primary: {
-				main: '#512da8'
+				main: '#512da8',
+				lightMain: '#512da8',
 			},
 			border: {
 				main: '#e4e4e4'
@@ -55,7 +60,8 @@ const CustomThemePalette = {
 		dark: {
 			primary: {
 				main: '#ffffff',
-				contrastText: '#512da8'
+				contrastText: '#512da8',
+				lightMain: '#512da8',
 			},
 			background: {
 				default: '#19082f',
@@ -68,7 +74,8 @@ const CustomThemePalette = {
 	cyan: {
 		light: {
 			primary: {
-				main: '#00838f'
+				main: '#00838f',
+				lightMain: '#00838f',
 			},
 			border: {
 				main: '#e4e4e4'
@@ -77,7 +84,8 @@ const CustomThemePalette = {
 		dark: {
 			primary: {
 				main: '#ffffff',
-				contrastText: '#00838f'
+				contrastText: '#00838f',
+				lightMain: '#00838f',
 			},
 			background: {
 				default: '#00363a',
@@ -90,7 +98,8 @@ const CustomThemePalette = {
 	grey: {
 		light: {
 			primary: {
-				main: '#616161'
+				main: '#616161',
+				lightMain: '#616161',
 			},
 			border: {
 				main: '#e4e4e4'
@@ -99,7 +108,8 @@ const CustomThemePalette = {
 		dark: {
 			primary: {
 				main: '#ffffff',
-				contrastText: '#616161'
+				contrastText: '#616161',
+				lightMain: '#616161',
 			},
 			background: {
 				default: '#212121',
@@ -112,7 +122,8 @@ const CustomThemePalette = {
 	black: {
 		light: {
 			primary: {
-				main: '#000000'
+				main: '#000000',
+				lightMain: '#AAAAAA',
 			},
 			border: {
 				main: '#e4e4e4'
@@ -121,7 +132,8 @@ const CustomThemePalette = {
 		dark: {
 			primary: {
 				main: '#ffffff',
-				contrastText: '#000000'
+				contrastText: '#000000',
+				lightMain: '#AAAAAA',
 			},
 			background: {
 				default: '#000000',

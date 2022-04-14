@@ -37,7 +37,7 @@ const ColorModeButton = () => {
 	);
 };
 
-const Topbar = () => {
+const Topbar = ({home}) => {
 	const { user } = useAuth0();
 	const { username } = useContext(UserDataContext);
 	const [dialogOpen, setDialogOpen] = useState(false);
@@ -51,27 +51,31 @@ const Topbar = () => {
   };
 
 	return (
-		<AppBar position = "relative" sx = {{ boxShadow: 'none', zIndex: (theme) => (theme.zIndex.drawer + 1) }}>
+		<AppBar position = {home ? "fixed": "relative"} sx = {{ boxShadow: 'none', zIndex: (theme) => (theme.zIndex.drawer + 1) }}>
 			<Toolbar sx = {{ display: 'flex', justifyContent: 'space-between', bgcolor: 'primary.main', color: "primary.contrastText" }}>
 				<Box sx = {{ display: 'flex', alignItems: 'center' }}>
 					<StyledLink to = "/">
 						<NoteAltIcon fontSize = "large" />
 					</StyledLink>
-					<Box sx = {{ display: ['none', 'flex'], flexDirection: 'column', justifyContent: 'center', px: 2 }}>
-						<Typography variant = "body2">
-							{username || 'Visitor'}
-						</Typography>
-						<Typography variant = "caption" noWrap sx = {{ width: '137.02px', fontSize: 10 }} >
-							{user?.email || 'Sign in to record your study'}
-						</Typography>
-					</Box>
-					<Divider orientation = "vertical" variant = "fullWidth" flexItem sx = {{ display: ['none', 'flex'], borderColor: 'primary.contrastText' }}/>
+					{!home && (
+						<>
+							<Box sx = {{ display: ['none', 'flex'], flexDirection: 'column', justifyContent: 'center', px: 2 }}>
+								<Typography variant = "body2">
+									{username || 'Visitor'}
+								</Typography>
+								<Typography variant = "caption" noWrap sx = {{ width: '137.02px', fontSize: 10 }} >
+									{user?.email || 'Sign in to record your study'}
+								</Typography>
+							</Box>
+							<Divider orientation = "vertical" variant = "fullWidth" flexItem sx = {{ display: ['none', 'flex'], borderColor: 'primary.contrastText' }}/>
+						</>
+					)}
 				</Box>
 				<Box sx = {{ display: 'flex' }}>
 					<StyledLink to = "/">
 						<Typography variant = "caption"
 							sx = {{
-								display: {'xs': 'none', 'lg': 'flex'},
+								display: {xs: 'none', lg: 'flex'},
 								alignItems: 'center',
 								border: 'solid 1px',
 								borderColor: (theme) => alpha(theme.palette.grey[300], theme.palette.mode === 'dark' ? 1.0 : 0.3),
@@ -84,8 +88,8 @@ const Topbar = () => {
 							Record your study, Share your knowledge
 						</Typography>
 					</StyledLink>
-					<Search />
-					<Box sx = {{ display: ['none', 'flex'] }}>
+					{!home && <Search />}
+					<Box sx = {{ display: home ? 'flex' : ['none', 'flex'] }}>
 						<StyledIconButton>
 							<AddLinkIcon fontSize = "small"/>
 						</StyledIconButton>
