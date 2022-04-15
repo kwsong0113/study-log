@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Topbar from '../components/Topbar';
 import HomeIntro from '../components/HomeIntro';
 import HomeTools from '../components/HomeTools';
-import HomeFeatures from '../components/HomeFeatures';
+import HomeStatistics from '../components/HomeStatistics';
 import HomeFooter from '../components/HomeFooter';
 
 const HomePage = () => {
@@ -22,9 +22,9 @@ const HomePage = () => {
 					   <HomeTools />
 					</Grid>
 				</Grid>
-				<HomeFeatures />
+				<HomeStatistics />
+				<HomeFooter />
 			</Container>
-			<HomeFooter />
 		</>
 	);
 };

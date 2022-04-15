@@ -41,6 +41,17 @@ const HOMETOOLS_CONENT2 = [
 	}
 ]
 
+const HomeToolsItem = ({ title, icon, comment }) => (
+	<Box sx = {{ display: 'flex', alignItems: 'center', py: 4 }}>
+		<Box sx = {{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 90, ml: -2 }}>
+			{icon}
+			<Typography variant = "body2" sx = {{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', mt: 0.2 }}>{title}</Typography>
+		</Box>
+		<Typography variant = "body2" sx = {{ fontSize: 13 }}>{comment}</Typography>
+	</Box>
+);
+
+
 const HomeTools = () => {
 	return (
 		<Box
@@ -56,25 +67,13 @@ const HomeTools = () => {
 			<Typography variant = "h6">Study Efficiently with Great Tools</Typography>
 			{HOMETOOLS_CONENT1.map(({ title, icon, comment }) =>
 				(
-					<Box sx = {{ display: 'flex', alignItems: 'center', py: 4 }}>
-						<Box sx = {{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center', width: 90, ml: -2 }}>
-							{icon}
-							<Typography variant = "body2" sx = {{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', mt: 0.2 }}>{title}</Typography>
-						</Box>
-						<Typography variant = "body2" sx = {{ fontSize: 13, textAlign: 'justify-all', }}>{comment}</Typography>
-					</Box>
+					<HomeToolsItem key = {title} title = {title} icon = {icon} comment = {comment} />
 				))
 			}
 			<Typography variant = "h6">Convenient and Beautiful</Typography>
 			{HOMETOOLS_CONENT2.map(({ title, icon, comment }) =>
 				(
-					<Box sx = {{ display: 'flex', alignItems: 'center', py: 4 }}>
-						<Box sx = {{ flexShrink: 0, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', width: 90, ml: -2 }}>
-							{icon}
-							<Typography variant = "body2" sx = {{ fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap', mt: 0.2 }}>{title}</Typography>
-						</Box>
-						<Typography variant = "body2" sx = {{ fontSize: 13 }}>{comment}</Typography>
-					</Box>
+					<HomeToolsItem key = {title} title = {title} icon = {icon} comment = {comment} />
 				))
 			}
 		</Box>
