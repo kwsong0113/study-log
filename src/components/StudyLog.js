@@ -11,18 +11,26 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import StudyLogContent from './StudyLogContent';
 
-const StudyLog = ({ data: { date, subjects, content } }) => {
-	const [expanded, setExpanded] = useState(new Array(content.length).fill(false));
+const StudyLog = ({ data: { date, contents } }) => {
+	const [expanded, setExpanded] = useState([]);
 
 	const [allExpanded, setAllExpanded] = useState(false);
 
-	useEffect(() => setAllExpanded(expanded.every((value) => value)), [expanded]);
+	useEffect(() => {
+		const updateExpanded = async () => {
+			await setExpanded(contents.map(({ logs }) => new Array(logs.length).fill(false)));
+		}
+
+		updateExpanded();
+	}, [contents]);
+
+	useEffect(() => setAllExpanded(expanded.every((row) => row.every((value) => value))), [expanded]);
 
 	const handleExpandToggle = () => {
 		if (allExpanded) {
-			setExpanded(new Array(content.length).fill(false));
+			setExpanded((previousExpanded) => previousExpanded.map((row) => new Array(row.length).fill(false)));
 		} else {
-			setExpanded(new Array(content.length).fill(true));
+			setExpanded((previousExpanded) => previousExpanded.map((row) => new Array(row.length).fill(true)));
 		}
 	}
 
@@ -50,7 +58,7 @@ const StudyLog = ({ data: { date, subjects, content } }) => {
 	      title={
 	      	<Box sx = {{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
 		      	<Typography variant = "caption" fontSize = {16} sx = {{ ml: 1 }}>
-		      		{date}
+		      		{new Date(date).toLocaleDateString('en-us', {month: '2-digit', day: '2-digit', year: 'numeric'})}
 	      		</Typography>
 	      		<Box display = "inline">
 		      		<IconButton>
@@ -64,19 +72,18 @@ const StudyLog = ({ data: { date, subjects, content } }) => {
     		}
 	      subheader={
 	      	<>
-	      		{
-	      			subjects.map((subject, index) => (
-	      					<Chip key = {index} label = {subject} size = "small" variant = "outlined" sx = {{
-	      						fontSize: 10, mr: 0.5, borderColor: 'border.main'
-	      					}}/>
-      					)
-      				)
-	      		}
+						{
+							contents.map(({ subjects }, index) => (
+								<Chip key = {index} label = {subjects.join(' + ')} size = "small" variant = "outlined" sx = {{
+									fontSize: 10, mr: 0.5, borderColor: 'border.main'
+								}}/>
+							))
+						}
 	      	</>
 	      }
 	    />
 	    <CardContent sx = {{ p: 0, '&:last-child': { pb: 0 } }}>
-	      <StudyLogContent content = {content} expanded = {expanded} setExpanded = {setExpanded} />
+	      <StudyLogContent contents = {contents} expanded = {expanded} setExpanded = {setExpanded} />
 	    </CardContent>
     </Card>
 	);

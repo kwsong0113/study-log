@@ -51,39 +51,52 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   backgroundColor: '#AAA2'
 }));
 
-const StudyLogContent = ({ content, expanded, setExpanded }) => {
+const StudyLogContent = ({ contents, expanded, setExpanded }) => {
 
-  const handleChange = (index) => (event, newExpanded) => {
-    setExpanded((previousExpanded) => [...previousExpanded.slice(0, index), newExpanded, ...previousExpanded.slice(index + 1)]);
+  const handleChange = (sectionIndex, logIndex) => (event, newExpanded) => {
+    try {
+      setExpanded((previousExpanded) => (
+        [...previousExpanded.slice(0, sectionIndex),
+          [...previousExpanded[sectionIndex].slice(0, logIndex), newExpanded, ...previousExpanded[sectionIndex].slice(logIndex + 1)],
+        ...previousExpanded.slice(sectionIndex + 1)]));
+    } catch(err) {
+      console.log('error: wait...');
+    }
   };
 
   return (
     <Box>
-    	{
-    		content.map(({ log, subLogs }, logIndex) => (
-    			<Accordion key = {logIndex} expanded={expanded[logIndex]} onChange={handleChange(logIndex)}>
-    				<AccordionSummary>
-    					<Typography sx = {{ fontSize: 12,  wordBreak: 'break-word'}}>
-    						{log}
-         			</Typography>
-       			</AccordionSummary>
-       			<AccordionDetails>
-     					<List sx = {{ p: 0 }}>
-     						{
-     							subLogs.map((subLog, subLogIndex) => (
-     								<ListItem key = {subLogIndex} sx = {{ p: 0, alignItems: 'flex-start' }}>
-				          		<ListItemIcon sx = {{ minWidth: 0, mr: 1, mt: 0.5 }}>
-				          			<CircleOutlinedIcon sx = {{ fontSize: 7 }}/>
-				        			</ListItemIcon>
-				        			<ListItemText primary = {subLog} sx = {{ m: 0, '& .MuiListItemText-primary': {fontSize: 10} }}/>
-				      			</ListItem>
-   								))
-     						}
-   						</List>
- 						</AccordionDetails>
-					</Accordion>
-  			))
-    	}
+      {
+        contents.map(({ logs }, sectionIndex) => (
+          <React.Fragment key = {sectionIndex}>
+            {
+              logs.map(({ log, subLogs }, logIndex) => (
+                <Accordion key = {logIndex} expanded={expanded[sectionIndex]?.[logIndex] === undefined ? false : expanded[sectionIndex][logIndex] } onChange={handleChange(sectionIndex, logIndex)}>
+                  <AccordionSummary>
+                    <Typography sx = {{ fontSize: 12,  wordBreak: 'break-word'}}>
+                      {log}
+                    </Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <List sx = {{ p: 0 }}>
+                      {
+                        subLogs.map((subLog, subLogIndex) => (
+                          <ListItem key = {subLogIndex} sx = {{ p: 0, alignItems: 'flex-start' }}>
+                            <ListItemIcon sx = {{ minWidth: 0, mr: 1, mt: 0.5 }}>
+                              <CircleOutlinedIcon sx = {{ fontSize: 7 }}/>
+                            </ListItemIcon>
+                            <ListItemText primary = {subLog} sx = {{ m: 0, '& .MuiListItemText-primary': {fontSize: 10} }}/>
+                          </ListItem>
+                        ))
+                      }
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              ))
+            }
+          </React.Fragment>
+        ))
+      }
   	</Box>
   );
 }

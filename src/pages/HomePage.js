@@ -13,7 +13,7 @@ const HomePage = () => {
 	return (
 		<>
 			<Topbar home = {true}/>
-			<Container sx = {{ maxWidth: { xs: 500, md: 900, xl: 1200 } }}>
+			<Container sx = {{ maxWidth: { xs: 500, md: 900, xl: 1200 }, overflowX: 'hidden' }}>
 				<Grid container spacing = {5} sx = {{ mt: { xs: 10, md: 15 } }}>
 					<Grid item xs = {12} md = {6} sx = {{ display: 'flex', alignItems: 'center' }}>
 						<HomeIntro />

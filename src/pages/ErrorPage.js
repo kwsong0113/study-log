@@ -1,8 +1,10 @@
 import React from 'react';
 
+import ErrorMessage from '../components/ErrorMessage';
+
 const ErrorPage = () => {
 	return (
-		<h1>Error...</h1>
+		<ErrorMessage message = "This page does not exist" />
 	);
 };
 

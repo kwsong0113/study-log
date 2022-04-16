@@ -37,7 +37,7 @@ const LayoutWithNavbar = () => {
 		<Box sx = {{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
 			<Topbar home = {false} />
 			<Header />
-			<Box sx = {{ ml: [0, `${drawerWidth}px`], overflow: 'auto', display: 'flex', flexDirection: 'column' }}>
+			<Box sx = {{ ml: [0, `${drawerWidth}px`], overflow: 'auto', display: 'flex', flexDirection: 'column', flexGrow: 1 }}>
 				<Outlet />
 			</Box>
 		</Box>
@@ -60,8 +60,8 @@ const App = () => {
 					<Router>
 						<Routes>
 							<Route path = "/*" element = {<LayoutWithNavbar />}>
-								<Route path = "studylog/:id" element = {<StudyLogPage />} />
-								<Route path = "todos/:id" element = {<TodosPage />} />
+								<Route path = "studylog/:username" element = {<StudyLogPage />} />
+								<Route path = "todos/:username" element = {<TodosPage />} />
 								<Route path = "community" element = {<CommunityPage />} />
 								<Route path = "pleasesignin" element = {<PleaseSignInPage />} />
 								{/*<Route path = "*" element = {<Navigate replace to = "/" />} />*/}

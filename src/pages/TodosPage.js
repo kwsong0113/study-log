@@ -1,8 +1,10 @@
 import React from 'react';
 
+import ErrorMessage from '../components/ErrorMessage';
+
 const TodosPage = () => {
 	return (
-		<h1>TodosPage</h1>
+		<ErrorMessage message = "This page is under construction" />
 	);
 };
 

@@ -1,8 +1,10 @@
 import React from 'react';
 
+import ErrorMessage from '../components/ErrorMessage';
+
 const CommunityPage = () => {
 	return (
-		<h1>CommunityPage</h1>
+		<ErrorMessage message = "This page is under construction" />
 	);
 };
 
