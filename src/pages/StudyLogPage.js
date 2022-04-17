@@ -40,7 +40,7 @@ const StudyLogPage = () => {
 	const { username: targetUsername } = useParams();
 	const { username: loggedInUsername } = useContext(UserDataContext);
 	const [isError, setIsError] = useState(false);
-	const [isLoading, setIsLoading] = useState(false);
+	const [isLoading, setIsLoading] = useState(0);
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [subject, setSubject] = useState(null);
 	const [data, setData] = useState([]);
@@ -48,32 +48,37 @@ const StudyLogPage = () => {
 	const [refDict, setRefDict] = useState({});
 
 	useEffect(() => {
-		setIsLoading(true);
+		setIsLoading((previousIsLoading) => previousIsLoading + 1);
 		axios.get(`http://localhost:8000/studylogs/${targetUsername}`)
 			.then((response) => {
 				setData((response.data));
 				setSubject(null);
 				setIsError(false);
-				setIsLoading(false);
+				setIsLoading((previousIsLoading) => previousIsLoading - 1);
 			})
 			.catch((error) => {
 				setIsError(true);
-				setIsLoading(false);
+				setIsLoading((previousIsLoading) => previousIsLoading - 1);
 			});
-	}, [targetUsername]);
-
+		}, [targetUsername]);
+		
 	useEffect(() => {
-		if (subject) {
-			const reducedData = data.reduce((previous, { contents, ...elseInfo }) => {
-				const filteredContents = contents.filter(({ subjects }) => subjects.includes(subject));
-				if (filteredContents.length) { return [...previous, { contents: filteredContents, ...elseInfo }]; }
-				return previous;
-			}, []);
-			setFilteredData(reducedData);
-		} else {
-			console.log('hh')
-			setFilteredData(data);
+		const updateFilteredContents = async () => {
+			setIsLoading((previousIsLoading) => previousIsLoading + 1);
+			if (subject) {
+				const reducedData = await data.reduce((previous, { contents, ...elseInfo }) => {
+					const filteredContents = contents.filter(({ subjects }) => subjects.includes(subject));
+					if (filteredContents.length) { return [...previous, { contents: filteredContents, ...elseInfo }]; }
+					return previous;
+				}, []);
+				setFilteredData(reducedData);
+				setIsLoading((previousIsLoading) => previousIsLoading - 1);
+			} else {
+				setFilteredData(data);
+				setIsLoading((previousIsLoading) => previousIsLoading - 1);
+			}
 		}
+		updateFilteredContents();		
 	}, [data, subject])
 
 	useEffect(() => {
@@ -103,7 +108,7 @@ const StudyLogPage = () => {
   	return !(formattedDate in refDict);
   }
 
-	if (isLoading) {
+	if (isLoading > 0) {
 		return <LoadingBox />
 	}
 
@@ -136,7 +141,7 @@ const StudyLogPage = () => {
 					{
 						filteredData.map((dailyData) => (
 							<Grid ref = {refDict[dailyData.date]} key = {dailyData.date} item xs = {12} smd = {6} lg = {4} xl = {3}>
-								<StudyLog data = {dailyData} />
+								<StudyLog data = {dailyData} editable = {loggedInUsername === targetUsername} />
 							</Grid> 
 						))
 					}

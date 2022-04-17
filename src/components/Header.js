@@ -1,19 +1,41 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useContext } from 'react';
+import { useLocation } from 'react-router-dom';
+
 import Typography from '@mui/material/Typography';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Drawer from '@mui/material/Drawer';
 import DragHandleIcon from '@mui/icons-material/DragHandle';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+
 import StyledIconButton from './StyledIconButton';
 import LeftDrawer from './LeftDrawer';
 import { drawerWidth } from '../App';
+import { UserDataContext } from './UserDataProvider';
+
+const locationToTitle = (location, username) => {
+	const splitLocation = location.pathname.split('/');
+	if (splitLocation.length === 2) {
+		if (splitLocation[1] === 'community') return 'Community';
+	} else if (splitLocation.length === 3) {
+		const viewName = splitLocation[2] === username ? 'My' : splitLocation[2] + ' -';
+		if (splitLocation[1] === 'studylog') {
+			return `${viewName} Study Log`;
+		} else if (splitLocation[1] === 'todos') {
+			return `${viewName} Todos`;
+		}
+	}
+	return 'Oops!'
+}
 
 const Header = () => {
 	const [mobileOpen, setMobileOpen] = useState(false);
 	const handleDrawerToggle = useMemo(() =>
 		(() => setMobileOpen((prevMobileOpen) => !prevMobileOpen)),
   []);
+	const { username } = useContext(UserDataContext);
+	const location = useLocation();
+
 	return (
 		<>
 			<AppBar
@@ -44,7 +66,7 @@ const Header = () => {
 						{mobileOpen ? <CloseOutlinedIcon fontSize = "small" /> : <DragHandleIcon fontSize = "small"/>}
 					</StyledIconButton>
 					<Typography color = "text.primary" variant = "body2">
-						Study Log
+						{locationToTitle(location, username)}
 					</Typography>
 				</Toolbar>
 			</AppBar>
@@ -76,7 +98,7 @@ const Header = () => {
 					}
 				}}
 			>
-				<LeftDrawer always = {false} />
+				<LeftDrawer always = {false} onClose = {handleDrawerToggle} />
 			</Drawer>
 		</>
 	);

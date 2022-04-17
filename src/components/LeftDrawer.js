@@ -18,7 +18,7 @@ import ThemeModeDialog from './ThemeModeDialog';
 import StyledLink from './StyledLink';
 import { UserDataContext } from './UserDataProvider';
 
-const LeftDrawer = ({ always }) => {
+const LeftDrawer = ({ always, onClose }) => {
   const { username } = useContext(UserDataContext);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -48,39 +48,41 @@ const LeftDrawer = ({ always }) => {
   ]), [username]);
 
   return (
-    <Box>
-      <Toolbar />
-      { !always && <Toolbar variant = "dense" /> }
-      {
-        list.map((subList, index) => (
-          <React.Fragment key = {index}>
-            <Divider variant = "middle" />
-            <List>
-              {
-                subList.map(({ label, icon, onClick, link }) => {
-                  const item = (
-                    <ListItem button disableRipple onClick = {onClick} >
-                      <ListItemIcon sx = {{ minWidth: '40px' }}>
-                        {icon}
-                      </ListItemIcon>
-                      <ListItemText primary={label} primaryTypographyProps = {{ fontSize: 12 }} sx = {{ ml: 0 }} />
-                    </ListItem>
-                  );
-                  if (link) {
-                    return (
-                      <StyledLink key = {label} to = {link}>{item}</StyledLink>
+    <>
+      <Box onClick = {always ? undefined : onClose}>
+        <Toolbar />
+        { !always && <Toolbar variant = "dense" /> }
+        {
+          list.map((subList, index) => (
+            <React.Fragment key = {index}>
+              <Divider variant = "middle" />
+              <List>
+                {
+                  subList.map(({ label, icon, onClick, link }) => {
+                    const item = (
+                      <ListItem button disableRipple onClick = {onClick} >
+                        <ListItemIcon sx = {{ minWidth: '40px' }}>
+                          {icon}
+                        </ListItemIcon>
+                        <ListItemText primary={label} primaryTypographyProps = {{ fontSize: 12 }} sx = {{ ml: 0 }} />
+                      </ListItem>
                     );
-                  } else {
-                    return <React.Fragment key = {label}>{item}</React.Fragment>;
-                  }
-                })
-              }
-            </List>
-          </React.Fragment>
-        ))
-      }
+                    if (link) {
+                      return (
+                        <StyledLink key = {label} to = {link}>{item}</StyledLink>
+                      );
+                    } else {
+                      return <React.Fragment key = {label}>{item}</React.Fragment>;
+                    }
+                  })
+                }
+              </List>
+            </React.Fragment>
+          ))
+        }
+      </Box>
       <ThemeModeDialog onClose = {handleClose} open = {dialogOpen} canToggleMode = {true}/>
-    </Box>
+    </>
   );
 };
 
