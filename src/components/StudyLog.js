@@ -15,7 +15,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import StudyLogContent from './StudyLogContent';
 import EditStudyLogDialog from './EditStudyLogDialog';
 
-const StudyLog = ({ data: { id, date, contents }, editable }) => {
+const StudyLog = ({ data: { id, date, contents }, editable, defaultExpanded }) => {
 	const [expanded, setExpanded] = useState([]);
 	const [allExpanded, setAllExpanded] = useState(false);
 
@@ -23,7 +23,10 @@ const StudyLog = ({ data: { id, date, contents }, editable }) => {
 
 	useEffect(() => {
 		const updateExpanded = async () => {
-			await setExpanded(contents.map(({ logs }) => new Array(logs.length).fill(false)));
+			if (expanded.length === contents.length && expanded.every((row, index) => row.length === contents[index].logs.length)) {
+				return;
+			}
+			await setExpanded(contents.map(({ logs }) => new Array(logs.length).fill(defaultExpanded)));
 		}
 
 		updateExpanded();

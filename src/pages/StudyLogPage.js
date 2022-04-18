@@ -141,7 +141,7 @@ const StudyLogPage = () => {
 					{
 						filteredData.map((dailyData) => (
 							<Grid ref = {refDict[dailyData.date]} key = {dailyData.date} item xs = {12} smd = {6} lg = {4} xl = {3}>
-								<StudyLog data = {dailyData} editable = {loggedInUsername === targetUsername} />
+								<StudyLog data = {dailyData} editable = {loggedInUsername === targetUsername} defaultExpanded = {false} />
 							</Grid> 
 						))
 					}
