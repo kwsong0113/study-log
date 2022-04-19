@@ -15,7 +15,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import StudyLogContent from './StudyLogContent';
 import EditStudyLogDialog from './EditStudyLogDialog';
 
-const StudyLog = ({ data: { id, date, contents }, editable, defaultExpanded }) => {
+const StudyLog = ({ data: { _id, date, contents }, editable, defaultExpanded }) => {
 	const [expanded, setExpanded] = useState([]);
 	const [allExpanded, setAllExpanded] = useState(false);
 
@@ -101,7 +101,7 @@ const StudyLog = ({ data: { id, date, contents }, editable, defaultExpanded }) =
 			</Card>
 			{
 				editable && (
-					<EditStudyLogDialog data = {{ id, date, contents }} open = {dialogOpen} onClose = {() => setDialogOpen(false)} />
+					<EditStudyLogDialog addMode = {false} data = {{ _id, date, contents }} open = {dialogOpen} onClose = {() => setDialogOpen(false)} />
 				)
 			}
 		</>

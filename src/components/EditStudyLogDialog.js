@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import axios from 'axios';
 
 import Dialog from '@mui/material/Dialog';
 import Grid from '@mui/material/Grid';
@@ -11,8 +12,13 @@ import Popover from '@mui/material/Popover';
 import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 import StudyLog from './StudyLog';
+import { UserDataContext } from './UserDataProvider';
+import { StudyLogPageContext } from '../pages/StudyLogPage';
+
+const domain = process.env.REACT_APP_API_DOMAIN;
 
 const studyLogExample = "# Web Development # Frontend\n\t+ Basics of HTML, CSS, and Javascript\n\t\t- HTML: provides the basic structure\n\t\t- CSS: used to control layout\n\t\t- Javascript: used to control the behavior of different elements";
 
@@ -61,10 +67,60 @@ const contentsToText = (contents) => {
   return textArray.join('\n');
 }
 
-const EditStudyLogDialog = ({ data: { id, date, contents }, open, onClose }) => {
+
+const EditStudyLogDialog = ({ addMode, data: { _id, date, contents }, open, onClose }) => {
+  const { username } = useContext(UserDataContext);
+  const { refreshData, setIsLoading, showSnackbar } = useContext(StudyLogPageContext);
   const [text, setText] = useState('');
   const [convertedContents, setConvertedContents] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  
+  const startLoading = () => setIsLoading((previousIsLoading) => previousIsLoading + 1);
+  const nextLoading = () => {
+    setIsLoading((previousIsLoading) => previousIsLoading - 1);
+    refreshData();
+  };
+
+  const updateStudyLog = () => {
+    onClose();
+    startLoading();
+    axios.post(`${domain}/studylogs/${username}`, { _id, contents: convertedContents })
+      .then(() => {
+        nextLoading();
+        showSnackbar("success", "Update Successful")
+      })
+      .catch((err) => {
+        nextLoading();
+        showSnackbar("error", "Update Failed")
+      });
+  };
+
+  const addStudyLog = () => {
+    onClose();
+    startLoading();
+    axios.post(`${domain}/studylogs/${username}`, { date, contents: convertedContents })
+      .then(() => {
+        nextLoading();
+        showSnackbar("success", "Upload Successful")
+      })
+      .catch((err) => {
+        nextLoading();
+        showSnackbar("error", "Upload Failed")
+      })
+  };
+
+  const deleteStudyLog = () => {
+    startLoading();
+    axios.delete(`${domain}/studylogs/${username}`, { data: { username, _id } })
+      .then(() => {
+        nextLoading();
+        showSnackbar("success", "Delete Successful")
+      })
+      .catch((err) => {
+        nextLoading();
+        showSnackbar("error", "Delete Failed")
+      });
+  };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -123,13 +179,19 @@ const EditStudyLogDialog = ({ data: { id, date, contents }, open, onClose }) => 
 		<Dialog
 			open = {open}
 			onClose = {onClose}
-      sx = {{ '& .MuiDialog-paper': { maxWidth: { xs: 500, lg: 800 }, width: { lg: 800 }, bgcolor: 'background.default' } }}
+      sx = {{ '& .MuiDialog-paper': { maxWidth: { xs: 500, lg: 800 }, width: { xs: 500, lg: 800 }, bgcolor: 'background.default' } }}
 		>
       <Box sx = {{ p: 2 }}>
         <Box sx = {{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant = "subtitle2" gutterBottom sx = {{ fontWeight: 'bold' }}>Study Log Editor</Typography>
           <Box sx = {{ display: 'flex', alignItems: 'center'}}>
-            <IconButton>
+            {!addMode && (
+                <IconButton onClick = {() => deleteStudyLog()}>
+                  <DeleteOutlineOutlinedIcon fontSize = "small" />
+                </IconButton>
+              )
+            }
+            <IconButton onClick = {() => (addMode ? addStudyLog : updateStudyLog)()}>
               <PublishedWithChangesOutlinedIcon fontSize = "small" />
             </IconButton>
             <IconButton onClick = {(event) => setAnchorEl(event.currentTarget)}>
@@ -175,7 +237,7 @@ const EditStudyLogDialog = ({ data: { id, date, contents }, open, onClose }) => 
           <Grid item xs = {12} lg = {6}>
             <Typography variant = "body2" gutterBottom align = "center" sx = {{ fontWeight: 'bold'}}>Preview</Typography>
             <Box sx = {{ overflowY: 'auto', height: 286, }}>
-              <StudyLog data = {{ id, date, contents: convertedContents }} editable = {false} defaultExpanded = { true }/>
+              <StudyLog data = {{ _id, date, contents: convertedContents }} editable = {false} defaultExpanded = { true }/>
             </Box>
           </Grid>
         </Grid>

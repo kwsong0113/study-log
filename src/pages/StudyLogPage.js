@@ -1,20 +1,30 @@
 import React, { useState, useEffect, useMemo, createRef, useContext } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { styled } from '@mui/material/styles';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
+import Fab from '@mui/material/Fab';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import PsychologyOutlinedIcon from '@mui/icons-material/PsychologyOutlined';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
-import { styled } from '@mui/material/styles';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 import StudyLog from '../components/StudyLog';
 import DatePickerDialog from '../components/DatePickerDialog';
 import { UserDataContext } from '../components/UserDataProvider';
 import ErrorMessage from '../components/ErrorMessage';
 import LoadingBox from '../components/LoadingBox';
+import EditStudyLogDialog from '../components/EditStudyLogDialog';
+
+export const StudyLogPageContext = React.createContext({});
+
+const domain = process.env.REACT_APP_API_DOMAIN;
 
 const StyledButton = styled((props) => (
 	<Button {...props} fullWidth disableRipple
@@ -36,20 +46,37 @@ const StyledButton = styled((props) => (
 	},
 }));
 
+const getTodayISOString = () => {
+	const today = new Date();
+	return new Date(new Date(today.toLocaleDateString()).getTime() - today.getTimezoneOffset() * 60000).toISOString();
+}
+
 const StudyLogPage = () => {
 	const { username: targetUsername } = useParams();
 	const { username: loggedInUsername } = useContext(UserDataContext);
 	const [isError, setIsError] = useState(false);
 	const [isLoading, setIsLoading] = useState(0);
 	const [dialogOpen, setDialogOpen] = useState(false);
+	const [editorOpen, setEditorOpen] = useState(false);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState('');
+	const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 	const [subject, setSubject] = useState(null);
 	const [data, setData] = useState([]);
 	const [filteredData, setFilteredData] = useState([]);
 	const [refDict, setRefDict] = useState({});
+	const [todayExist, setTodayExist] = useState(false);
 
-	useEffect(() => {
+	const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+	
+	const refreshData = () => {
 		setIsLoading((previousIsLoading) => previousIsLoading + 1);
-		axios.get(`http://localhost:8000/studylogs/${targetUsername}`)
+		axios.get(`${domain}/studylogs/${targetUsername}`)
 			.then((response) => {
 				setData((response.data));
 				setSubject(null);
@@ -60,7 +87,17 @@ const StudyLogPage = () => {
 				setIsError(true);
 				setIsLoading((previousIsLoading) => previousIsLoading - 1);
 			});
-		}, [targetUsername]);
+	};
+
+	const showSnackbar = (severity, message) => {
+		setSnackbarSeverity(severity);
+		setSnackbarMessage(message);
+		setSnackbarOpen(true);
+	}
+
+	useEffect(() => {
+		refreshData();
+	}, [targetUsername]);
 		
 	useEffect(() => {
 		const updateFilteredContents = async () => {
@@ -78,8 +115,10 @@ const StudyLogPage = () => {
 				setIsLoading((previousIsLoading) => previousIsLoading - 1);
 			}
 		}
-		updateFilteredContents();		
-	}, [data, subject])
+		updateFilteredContents();
+		const today = getTodayISOString();
+		setTodayExist(data.some(({ date }) => date === today));
+	}, [data, subject]);
 
 	useEffect(() => {
 		for (const { date } of filteredData) {
@@ -90,21 +129,13 @@ const StudyLogPage = () => {
 
 	const minDate = useMemo(() => (filteredData.length ? new Date(filteredData[0].date) : new Date()), [filteredData]);
 
-	const handleClickOpen = () => {
-    setDialogOpen(true);
-  };
-
-  const handleClose = () => {
-    setDialogOpen(false);
-  };
-
   const onDateChange = (date) => {
   	const formattedDate = date.toISOString();
   	refDict[formattedDate]?.current?.scrollIntoView({block: 'start', behavior: 'smooth'});
   };
 
   const shouldDisableDate = (date) => {
-  	const formattedDate = date.toISOString();
+		const formattedDate = date.toISOString();
   	return !(formattedDate in refDict);
   }
 
@@ -117,10 +148,10 @@ const StudyLogPage = () => {
 	}
 
 	return (
-		<>
+		<StudyLogPageContext.Provider value ={{ refreshData, setIsLoading, showSnackbar }}>
 			<Grid container spacing = {2} sx = {{ p: 3 }}>
 				<Grid item xs = {12} smd = {6} lg = {4} xl = {3}>
-					<StyledButton onClick = {handleClickOpen}>
+					<StyledButton onClick = {() => setDialogOpen(true)}>
 						<Box display = "flex" sx = {{ alignItems: 'center' }} >
 							<CalendarMonthOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
 							Select Date
@@ -132,6 +163,14 @@ const StudyLogPage = () => {
 						<Box display = "flex" sx = {{ alignItems: 'center' }}>
 							<PsychologyOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
 							Select Subject
+						</Box>
+					</StyledButton>
+				</Grid>
+				<Grid item lg = {4} xl = {3} sx = {{ display: loggedInUsername === targetUsername && !todayExist ? {xs: 'none', lg: 'block'} : 'none' }}>
+					<StyledButton onClick = {() => setEditorOpen(true)}>
+						<Box display = "flex" sx = {{ alignItems: 'center' }}>
+							<AddOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
+							New Study Log
 						</Box>
 					</StyledButton>
 				</Grid>
@@ -147,8 +186,17 @@ const StudyLogPage = () => {
 					}
 				</Grid>
 			</Box>
-			<DatePickerDialog open = {dialogOpen} onClose = {handleClose} onDateChange = {onDateChange} shouldDisableDate = {shouldDisableDate} minDate = {minDate}/>
-		</>
+			<Fab size = "medium" color = "primary" onClick = {() => setEditorOpen(true)} sx= {{ display: loggedInUsername === targetUsername && !todayExist ? {xs: 'flex', lg: 'none'} : 'none', position: 'absolute', bottom: 16, right: 24 }}>
+				<AddOutlinedIcon fontSize = "small" />
+			</Fab>
+			<DatePickerDialog open = {dialogOpen} onClose = {() => setDialogOpen(false)} onDateChange = {onDateChange} shouldDisableDate = {shouldDisableDate} minDate = {minDate}/>
+			<EditStudyLogDialog addMode = {true} open = {editorOpen} onClose = {() => setEditorOpen(false)} data = {{ date: getTodayISOString(), contents: [] }} />
+			<Snackbar open = {snackbarOpen} autoHideDuration = {5000} onClose = {handleSnackbarClose}>
+        <Alert onClose = {handleSnackbarClose} severity = {snackbarSeverity} sx = {{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+		</StudyLogPageContext.Provider>
 	);
 };
 

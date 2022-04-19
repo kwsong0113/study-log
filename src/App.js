@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Outlet, Navigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -44,9 +44,36 @@ const LayoutWithNavbar = () => {
 	);
 }
 
+const useDidMountEffect = (func, deps) => {
+  const didMount = useRef(false);
+
+  useEffect(() => {
+    if (didMount.current) {
+      func();
+    } else {
+      didMount.current = true;
+    }
+  }, deps);
+};
+
 const App = () => {
 	const [mode, setMode] = useState('light');
 	const [themeValue, setThemeValue] = useState('blue');
+
+	useEffect(() => {
+		const localMode = localStorage.getItem('mode');
+		if (localMode) { setMode(localMode); }
+		const localTheme = localStorage.getItem('theme');
+		if (localTheme) { setThemeValue(localTheme); }
+	}, []);
+
+	useDidMountEffect(() => {
+		localStorage.setItem('mode', mode);
+	}, [mode]);
+
+	useDidMountEffect(() => {
+		localStorage.setItem('theme', themeValue);
+	}, [themeValue]);
 
 	const setThemeMode = {setMode, setThemeValue};
 
