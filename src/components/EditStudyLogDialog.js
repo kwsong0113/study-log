@@ -6,10 +6,19 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
+import Popover from '@mui/material/Popover';
 
-import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
+import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 
 import StudyLog from './StudyLog';
+
+const studyLogExample = "# Web Development # Frontend\n\t+ Basics of HTML, CSS, and Javascript\n\t\t- HTML: provides the basic structure\n\t\t- CSS: used to control layout\n\t\t- Javascript: used to control the behavior of different elements";
+
+const StyledTypography = ({ children, ...props}) => (
+  <Typography {...props} variant = "body2" gutterBottom sx = {{ fontSize: 11, textIndent: -11, pl: '11px', mb: 1 }}>{'# ' + children}</Typography>
+) ;
 
 const textToContents = (text) => {
   const resultContents = [];
@@ -55,6 +64,7 @@ const contentsToText = (contents) => {
 const EditStudyLogDialog = ({ data: { id, date, contents }, open, onClose }) => {
   const [text, setText] = useState('');
   const [convertedContents, setConvertedContents] = useState([]);
+  const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleKeyDown = (event) => {
     if (event.key === 'Tab') {
@@ -118,9 +128,44 @@ const EditStudyLogDialog = ({ data: { id, date, contents }, open, onClose }) => 
       <Box sx = {{ p: 2 }}>
         <Box sx = {{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Typography variant = "subtitle2" gutterBottom sx = {{ fontWeight: 'bold' }}>Study Log Editor</Typography>
-          <IconButton>
-            <SaveOutlinedIcon fontSize = "small" />
-          </IconButton>
+          <Box sx = {{ display: 'flex', alignItems: 'center'}}>
+            <IconButton>
+              <PublishedWithChangesOutlinedIcon fontSize = "small" />
+            </IconButton>
+            <IconButton onClick = {(event) => setAnchorEl(event.currentTarget)}>
+              <HelpOutlineOutlinedIcon fontSize = "small" />
+            </IconButton>
+            <Popover
+              open = {Boolean(anchorEl)}
+              anchorEl = {anchorEl}
+              onClose = {() => setAnchorEl(null)}
+              anchorOrigin = {{
+                vertical: 'bottom',
+                horizontal: 'right',
+              }}
+              transformOrigin = {{
+                vertical: 'top',
+                horizontal: 'right'
+              }}
+            >
+              <Box sx = {{ maxWidth: 300, p: 2, bgcolor: 'background.default' }}>
+                <Typography variant = "subtitle2" color = "primary" gutterBottom sx = {{ fontSize: 13, mb: 1 }}>How to use the study log editor</Typography>
+                <StyledTypography>To denote a subject, add a number sign (#) before it (e.g., # Mathematics).</StyledTypography>
+                <StyledTypography>If you want to write about multiple subjects, list them in one line (e.g., # Linear Algebra # Calculus)</StyledTypography>
+                <StyledTypography>To create a log, add a plus sign (+) before it</StyledTypography>
+                <StyledTypography>To create a sublog, add a minus sign (-) before it</StyledTypography>
+                <StyledTypography>Indentation (optional): You are recommended to indent logs and double indent sublogs.</StyledTypography>
+                <StyledTypography>Indent: Tab, Reverse Indent: Shift + Tab</StyledTypography>
+                <Typography variant = "subtitle2" color = "primary" gutterBottom sx = {{ fontSize: 13, my: 1 }}>Example</Typography>
+                <Box>
+                  <TextField fullWidth  multiline sx = {{ wordBreak: 'break-all', '& .MuiInputBase-input': { fontSize: 11 } }} value = {studyLogExample} />
+                </Box>
+              </Box>
+            </Popover>
+            <IconButton onClick = {onClose}>
+              <CloseOutlinedIcon fontSize = "small" />
+            </IconButton>
+          </Box>
         </Box>
         <Grid container spacing = {2}>
           <Grid item xs = {12} lg = {6}>
