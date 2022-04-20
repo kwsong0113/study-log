@@ -80,10 +80,10 @@ const App = () => {
 	const theme = useMemo(() => createTheme(getDesignTokens(mode, themeValue)), [mode, themeValue]);
 
 	return (
-		<UserDataProvider>
-			<ThemeModeContext.Provider value = {{ mode, themeValue, setThemeMode }}>
-				<ThemeProvider theme = {theme}>
-					<CssBaseline />
+		<ThemeModeContext.Provider value = {{ mode, themeValue, setThemeMode }}>
+			<ThemeProvider theme = {theme}>
+				<CssBaseline />
+				<UserDataProvider>
 					<Router>
 						<Routes>
 							<Route path = "/*" element = {<LayoutWithNavbar />}>
@@ -97,9 +97,9 @@ const App = () => {
 							<Route path = "/" element = {<HomePage />} />
 						</Routes>
 					</Router>
-			  </ThemeProvider>
-		  </ThemeModeContext.Provider>
-	  </UserDataProvider>
+	  		</UserDataProvider>
+			</ThemeProvider>
+		</ThemeModeContext.Provider>
 	);
 };
 

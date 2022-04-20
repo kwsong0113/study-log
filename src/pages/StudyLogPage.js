@@ -21,6 +21,7 @@ import { UserDataContext } from '../components/UserDataProvider';
 import ErrorMessage from '../components/ErrorMessage';
 import LoadingBox from '../components/LoadingBox';
 import EditStudyLogDialog from '../components/EditStudyLogDialog';
+import SubjectSelectorDialog from '../components/SubjectSelectorDialog';
 
 export const StudyLogPageContext = React.createContext({});
 
@@ -59,9 +60,11 @@ const StudyLogPage = () => {
 	const [dialogOpen, setDialogOpen] = useState(false);
 	const [editorOpen, setEditorOpen] = useState(false);
 	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [subjectSelectorOpen, setSubjectSelectorOpen] = useState(false);
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 	const [snackbarSeverity, setSnackbarSeverity] = useState('success');
-	const [subject, setSubject] = useState(null);
+	const [subject, setSubject] = useState('');
+	const [subjectList, setSubjectList] = useState([]);
 	const [data, setData] = useState([]);
 	const [filteredData, setFilteredData] = useState([]);
 	const [refDict, setRefDict] = useState({});
@@ -79,7 +82,7 @@ const StudyLogPage = () => {
 		axios.get(`${domain}/studylogs/${targetUsername}`)
 			.then((response) => {
 				setData((response.data));
-				setSubject(null);
+				setSubject('');
 				setIsError(false);
 				setIsLoading((previousIsLoading) => previousIsLoading - 1);
 			})
@@ -98,6 +101,17 @@ const StudyLogPage = () => {
 	useEffect(() => {
 		refreshData();
 	}, [targetUsername]);
+
+	useEffect(() => {
+		const updateSubjectList = async () => {
+			const subjectSet = new Set();
+			data.forEach(({ contents }) => {
+				contents.forEach(({ subjects }) => subjects.forEach((subject) => subjectSet.add(subject)));
+			});
+			setSubjectList(Array.from(subjectSet));
+		}
+		updateSubjectList();
+	}, [data])
 		
 	useEffect(() => {
 		const updateFilteredContents = async () => {
@@ -121,6 +135,7 @@ const StudyLogPage = () => {
 	}, [data, subject]);
 
 	useEffect(() => {
+		setRefDict({});
 		for (const { date } of filteredData) {
 			const newRef = createRef();
 			setRefDict((prevRefDict) => ({...prevRefDict, [date]: newRef}));
@@ -159,7 +174,7 @@ const StudyLogPage = () => {
 					</StyledButton>
 				</Grid>
 				<Grid item xs = {12} smd = {6} lg = {4} xl = {3}>
-					<StyledButton>
+					<StyledButton onClick = {() => setSubjectSelectorOpen(true)}>
 						<Box display = "flex" sx = {{ alignItems: 'center' }}>
 							<PsychologyOutlinedIcon sx = {{ mr: 2, fontSize: 20 }} />
 							Select Subject
@@ -180,7 +195,7 @@ const StudyLogPage = () => {
 					{
 						filteredData.map((dailyData) => (
 							<Grid ref = {refDict[dailyData.date]} key = {dailyData.date} item xs = {12} smd = {6} lg = {4} xl = {3}>
-								<StudyLog data = {dailyData} editable = {loggedInUsername === targetUsername} defaultExpanded = {false} />
+								<StudyLog data = {dailyData} editable = {(subject === '') && (loggedInUsername === targetUsername)} defaultExpanded = {false} />
 							</Grid> 
 						))
 					}
@@ -196,6 +211,7 @@ const StudyLogPage = () => {
           {snackbarMessage}
         </Alert>
       </Snackbar>
+			<SubjectSelectorDialog subjects = {subjectList} subject = {subject} setSubject = {setSubject} open = {subjectSelectorOpen} onClose = {() => setSubjectSelectorOpen(false)} />
 		</StudyLogPageContext.Provider>
 	);
 };
