@@ -30,7 +30,7 @@ const SubjectSelectorDialog = ({ subjects, subject, setSubject, open, onClose}) 
         </FormControl>
       </Box>
     </Dialog>
-  )
+  );
 };
 
 export default SubjectSelectorDialog;
