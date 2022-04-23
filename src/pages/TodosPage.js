@@ -6,11 +6,19 @@ import { useParams } from 'react-router-dom';
 import Box from '@mui/material/Box'; 
 import Masonry from '@mui/lab/Masonry';
 import Fab from '@mui/material/Fab';
+import CircularProgress from '@mui/material/CircularProgress';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
 
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import PublishedWithChangesOutlinedIcon from '@mui/icons-material/PublishedWithChangesOutlined';
 
 import { UserDataContext } from '../components/UserDataProvider';
 import TodosNote from '../components/TodosNote';
+import LoadingBox from '../components/LoadingBox';
+import ErrorMessage from '../components/ErrorMessage';
+
+const domain = process.env.REACT_APP_API_DOMAIN;
 
 const reducer = ({ _id, changed, notes }, action) => {
 	switch (action.type) {
@@ -62,6 +70,17 @@ const reducer = ({ _id, changed, notes }, action) => {
 					todos: note.todos.map((todo) => todo.id === action.payload.todoId ? { ...todo, status: action.payload.status } : todo)
 				} : note)
 			};
+		case 'init':
+			return {
+				_id: action.payload.initialState._id,
+				notes: action.payload.initialState.notes.map((note) => ({ ...note, lastModified: new Date(note.lastModified) })),
+				changed: false
+			};
+		case 'reset':
+			return {
+				_id, notes,
+				changed: false
+			}
 		default:
 			return { _id, changed, notes };
 	}
@@ -70,11 +89,63 @@ const reducer = ({ _id, changed, notes }, action) => {
 const TodosPage = () => {
 	const { username: targetUsername } = useParams();
 	const { username: loggedInUsername } = useContext(UserDataContext);
+	const [isError, setIsError] = useState(false);
+	const [isLoading, setIsLoading] = useState(0);
+	const [isUpdating, setIsUpdating] = useState(false);
+	const [snackbarOpen, setSnackbarOpen] = useState(false);
+	const [snackbarMessage, setSnackbarMessage] = useState('');
+	const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 	const [state, dispatch] = useReducer(reducer, { _id: null, changed: false, notes: [] });
 
+	const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+	const showSnackbar = (severity, message) => {
+		setSnackbarSeverity(severity);
+		setSnackbarMessage(message);
+		setSnackbarOpen(true);
+	}
+
+	const updateTodos = () => {
+		setIsUpdating(true);
+		dispatch({ type: 'reset' })
+		axios.post(`${domain}/todos/${targetUsername}`, { _id: state._id, notes: state.notes })
+      .then(() => {
+				setIsUpdating(false);
+				showSnackbar("success", "Update Successful");
+      })
+      .catch((err) => {
+				setIsUpdating(false);
+				showSnackbar("error", "Update Failed");
+      });
+	}
+
 	useEffect(() => {
-		document.activeElement?.blur();
-	}, [])
+		setIsLoading((previousIsLoading) => previousIsLoading + 1);
+		axios.get(`${domain}/todos/${targetUsername}`)
+			.then((response) => {
+				dispatch({ type: 'init', payload: { initialState: response.data }})
+				setIsError(false);
+				setIsLoading((previousIsLoading) => previousIsLoading - 1);
+				document.activeElement?.blur();
+			})
+			.catch((error) => {
+				setIsError(true);
+				setIsLoading((previousIsLoading) => previousIsLoading - 1);
+			});
+	}, [targetUsername]);
+
+	if (isLoading > 0) {
+		return <LoadingBox />
+	}
+
+	if (isError) {
+		return <ErrorMessage message = "User not found" />;
+	}
 
 	return (
 		<>
@@ -89,12 +160,32 @@ const TodosPage = () => {
 			</Box>
 			{
 				targetUsername === loggedInUsername && (
-					<Fab size = "medium" color = "primary"
-						onClick = {() => dispatch({ type: 'addNote' })}
-						sx = {{position: 'absolute', bottom: 16, right: 24 }}
-					>
-						<AddOutlinedIcon fontSize = "small" />
-					</Fab>
+					<>
+						<Fab size = "medium" color = "primary"
+							onClick = {updateTodos} disabled = {!state.changed}
+							sx = {{ position: 'absolute', bottom: 74, right: 24 }}
+						>
+							<PublishedWithChangesOutlinedIcon fontSize = "small" />
+							{isUpdating && (
+								<CircularProgress color = "warning" size = {60}
+									sx = {{
+										position: 'absolute', bottom: -6, right: -6, 
+									}} 
+								/>)
+							}
+						</Fab>
+						<Fab size = "medium" color = "primary"
+							onClick = {() => dispatch({ type: 'addNote' })}
+							sx = {{position: 'absolute', bottom: 16, right: 24 }}
+						>
+							<AddOutlinedIcon fontSize = "small" />
+						</Fab>
+						<Snackbar open = {snackbarOpen} autoHideDuration = {5000} onClose = {handleSnackbarClose}>
+							<Alert onClose = {handleSnackbarClose} severity = {snackbarSeverity} sx = {{ width: '100%' }}>
+								{snackbarMessage}
+							</Alert>
+						</Snackbar>
+					</>
 				)
 			}
 		</>

@@ -21,7 +21,7 @@ const StyledTextField = ({ editable, sx, ...elseProps }) => {
     </Typography>
   )
   return (
-    <TextField {...elseProps} multiline variant = "filled" inputProps = {{ autoFocus: true }}
+    <TextField {...elseProps} multiline variant = "filled" inputProps = {{ autoFocus: true, spellCheck: false }}
       sx = {{
         '& .MuiInputBase-root': {
           '&::before': { border: 'none', },
