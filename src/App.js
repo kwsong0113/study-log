@@ -29,7 +29,10 @@ const getDesignTokens = (mode, themeValue) => ({
 	breakpoints: {
     keys: ["xs", "sm", "smd", "md", "lg", "xl"],
     values: { xs: 0, sm: 600, smd: 700, md: 900, lg: 1200, xl: 1536 }
-  }
+  },
+	typography: {
+		fontFamily: `"Roboto", "Hevetica", "Arial", "Nanum Gothic", sans-serif`
+	}
 });
 
 const LayoutWithNavbar = () => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 
 import Grid from '@mui/material/Grid';
@@ -18,6 +18,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LoadingBox from '../components/LoadingBox';
 import ErrorMessage from '../components/ErrorMessage';
 import StyledLink from '../components/StyledLink';
+import UserDataProvider, { UserDataContext } from '../components/UserDataProvider';
 
 const domain = process.env.REACT_APP_API_DOMAIN;
 
@@ -25,6 +26,7 @@ const CommunityPage = () => {
 	const [isError, setIsError] = useState(false);
 	const [isLoading, setIsLoading] = useState(0);
 	const [users, setUsers] = useState([]);
+	const { username: loggedInUsername } = useContext(UserDataContext);
 
 	useEffect(() => {
 		setIsLoading((previousIsLoading) => previousIsLoading + 1);
@@ -49,55 +51,57 @@ const CommunityPage = () => {
 	}
 
 	return (
-		<Grid container spacing = {3} sx = {{ p: 3 }}>
+		<Grid container spacing = {2} sx = {{ p: 3 }}>
 			{
 				users.map(({ email, username, numStudyLogs, geoip }) => (
-					<Grid item key = { username} xs = {12} smd = {6} lg = {4} xl = {3}>
-						<Card
-							sx = {{
-								bgcolor: 'background.default',
-								border: '1px solid',
-								borderColor: 'border.main',
-							}}
-						>
-							<CardHeader
+					username !== loggedInUsername && (
+						<Grid item key = {username} xs = {12} smd = {6} lg = {4} xl = {3}>
+							<Card
 								sx = {{
-									py: 1.5,
-									bgcolor: '#AAA2',
-									'& .MuiCardHeader-title': { fontSize: 16, fontWeight: '500', color: 'primary.main' },
-									'& .MuiCardHeader-subheader': { fontSize: 12 }
+									bgcolor: 'background.default',
+									border: '1px solid',
+									borderColor: 'border.main',
 								}}
-								action = {
-									<Box sx = {{ display: 'flex' }}>
-										<StyledLink to = {`/studylog/${username}`}>
-											<IconButton>
-												<SummarizeOutlinedIcon />
-											</IconButton>
-										</StyledLink>
-										<StyledLink to = {`/todos/${username}`}>
-											<IconButton>
-												<EventAvailableOutlinedIcon />
-											</IconButton>
-										</StyledLink>
+							>
+								<CardHeader
+									sx = {{
+										py: 1.5,
+										bgcolor: '#AAA2',
+										'& .MuiCardHeader-title': { fontSize: 16, fontWeight: '500', color: 'primary.main' },
+										'& .MuiCardHeader-subheader': { fontSize: 12 }
+									}}
+									action = {
+										<Box sx = {{ display: 'flex' }}>
+											<StyledLink to = {`/studylog/${username}`}>
+												<IconButton>
+													<SummarizeOutlinedIcon />
+												</IconButton>
+											</StyledLink>
+											<StyledLink to = {`/todos/${username}`}>
+												<IconButton>
+													<EventAvailableOutlinedIcon />
+												</IconButton>
+											</StyledLink>
+										</Box>
+									}
+									title = {username}
+									subheader = {email}
+								/>
+								<CardContent sx = {{ pb: '16px !important' }}>
+									<Box sx = {{ display: 'flex', alignItems: 'flex-end' }}>
+										{geoip && (
+											<>
+												<LocationOnOutlinedIcon sx = {{ fontSize: 23, mr: 0.5 }} />
+												<Typography noWrap variant = "body2" sx = {{ mr: 1.5 }}>{`${geoip.cityName}, ${geoip.countryCode3}`}</Typography>
+											</>
+										)}
+										<StarBorderOutlinedIcon sx = {{ fontSize: 23, mr: 0.5 }} />
+										<Typography variant = "body2">{numStudyLogs}</Typography>
 									</Box>
-								}
-								title = {username}
-								subheader = {email}
-							/>
-							<CardContent sx = {{ pb: '16px !important' }}>
-								<Box sx = {{ display: 'flex', alignItems: 'flex-end' }}>
-									{geoip && (
-										<>
-											<LocationOnOutlinedIcon sx = {{ fontSize: 23, mr: 0.5 }} />
-											<Typography noWrap variant = "body2" sx = {{ mr: 1.5 }}>{`${geoip.cityName}, ${geoip.countryCode3}`}</Typography>
-										</>
-									)}
-									<StarBorderOutlinedIcon sx = {{ fontSize: 23, mr: 0.5 }} />
-									<Typography variant = "body2">{numStudyLogs}</Typography>
-								</Box>
-							</CardContent>
-						</Card>
-					</Grid>
+								</CardContent>
+							</Card>
+						</Grid>
+					)
 				))
 			}
 		</Grid>
