@@ -16,6 +16,7 @@ import StudyLogPage from './pages/StudyLogPage';
 import TodosPage from './pages/TodosPage';
 import ErrorPage from './pages/ErrorPage';
 import PleaseSignInPage from './pages/PleaseSignInPage';
+import MyPage from './pages/MyPage';
 
 
 export const drawerWidth = 200;
@@ -94,10 +95,10 @@ const App = () => {
 								<Route path = "todos/:username" element = {<TodosPage />} />
 								<Route path = "community" element = {<CommunityPage />} />
 								<Route path = "pleasesignin" element = {<PleaseSignInPage />} />
-								{/*<Route path = "*" element = {<Navigate replace to = "/" />} />*/}
 								<Route path = "*" element = {<ErrorPage />} />
 							</Route>
 							<Route path = "/" element = {<HomePage />} />
+							<Route path = "my" element = {<MyPage />} />
 						</Routes>
 					</Router>
 	  		</UserDataProvider>

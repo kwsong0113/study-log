@@ -21,7 +21,7 @@ const  HOMEINTRO_CONTENTS = {
 };
 
 const HomeIntro = () => {
-	const { isAuthenticated, loginWithPopup, logout } = useAuth0();
+	const { isAuthenticated, loginWithRedirect, logout } = useAuth0();
 	const { username } = useContext(UserDataContext);
 
 	return (
@@ -71,7 +71,7 @@ const HomeIntro = () => {
 				) : (
 					<>
 						<Grid item xs = {6}>
-							<StyledHomeButton startIcon = {<LoginOutlinedIcon />} comment = "to record your study" onClick = {() => loginWithPopup()}>
+							<StyledHomeButton startIcon = {<LoginOutlinedIcon />} comment = "to record your study" onClick = {() => loginWithRedirect()}>
 								Sign in
 							</StyledHomeButton>
 						</Grid>

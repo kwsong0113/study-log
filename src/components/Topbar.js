@@ -20,6 +20,7 @@ import Search from './Search';
 import ThemeModeDialog from './ThemeModeDialog';
 import StyledLink from './StyledLink';
 import { UserDataContext } from './UserDataProvider';
+import SLogIcon from './SLogIcon';
 
 const ColorModeButton = () => {
 	const themeModeContext = useContext(ThemeModeContext);
@@ -55,7 +56,7 @@ const Topbar = ({home}) => {
 			<Toolbar sx = {{ display: 'flex', justifyContent: 'space-between', bgcolor: 'primary.main', color: "primary.contrastText" }}>
 				<Box sx = {{ display: 'flex', alignItems: 'center' }}>
 					<StyledLink to = "/">
-						<NoteAltIcon fontSize = "large" />
+						<SLogIcon />
 					</StyledLink>
 					{!home && (
 						<>
