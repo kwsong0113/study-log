@@ -112,7 +112,7 @@ const TodosNote = ({ editable, dispatch, note: { id: noteId, title, lastModified
         }
         subheader={
           <Typography variant = "caption" sx = {{ fontSize: 11, color: 'text.secondary' }}>
-            {`Last modified on ${lastModified.toLocaleString('en-US', { dateStyle: "medium", timeStyle: "short" })}`}
+            {`Last Modified on ${lastModified.toLocaleString('en-US', { dateStyle: "medium", timeStyle: "short" })}`}
           </Typography>
         }
       />

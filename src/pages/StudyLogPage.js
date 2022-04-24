@@ -144,14 +144,16 @@ const StudyLogPage = () => {
 
 	const minDate = useMemo(() => (filteredData.length ? new Date(filteredData[0].date) : new Date()), [filteredData]);
 
+	const formatDate = (date) => {
+		return new Date(date.getTime() - 60000 * date.getTimezoneOffset()).toISOString();
+	}
+
   const onDateChange = (date) => {
-  	const formattedDate = date.toISOString();
-  	refDict[formattedDate]?.current?.scrollIntoView({block: 'start', behavior: 'smooth'});
+  	refDict[formatDate(date)]?.current?.scrollIntoView({block: 'start', behavior: 'smooth'});
   };
 
   const shouldDisableDate = (date) => {
-		const formattedDate = date.toISOString();
-  	return !(formattedDate in refDict);
+  	return !(formatDate(date) in refDict);
   }
 
 	if (isLoading > 0) {
