@@ -2,6 +2,9 @@ const CACHE_NAME = 'slog-pwa';
 const urlsToCache = [
   'index.html',
   'offline.html',
+  './images/icon-192x192.png',
+  './images/icon-192x192-1.png',
+  './images/offline.png'
 ];
 
 // Install a service worker
@@ -20,8 +23,10 @@ self.addEventListener('install', event => {
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
-      .then(() => {
-        // console.log(event.request);
+      .then((response) => {
+        if (event.request.destination === 'image') {
+          return response;
+        }
         return fetch(event.request)
           .catch(() => caches.match('offline.html'))
       }
