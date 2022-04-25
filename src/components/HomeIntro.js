@@ -32,7 +32,7 @@ const HomeIntro = () => {
 				fontWeight: 600,
 				textAlign: {xs: 'center', md: 'left'} }}
 			>
-				{HOMEINTRO_CONTENTS .introMessage1}
+				{HOMEINTRO_CONTENTS.introMessage1}
 			</Typography>
 			<Typography variant = "h3" gutterBottom sx = {{
 				fontSize: { xs: 32, sm: 40, xl: 52},
@@ -40,10 +40,10 @@ const HomeIntro = () => {
 				fontWeight: 600,
 				textAlign: {xs: 'center', md: 'left'}}}
 			>
-				{HOMEINTRO_CONTENTS .introMessage2}
+				{HOMEINTRO_CONTENTS.introMessage2}
 			</Typography>
 			<Typography variant = "body2" sx = {{ color: (theme) => theme.palette.mode === 'light' ? 'grey.700' : 'grey.500', textAlign: {xs: 'center', md: 'left'}, mb: 3 }}>
-				{HOMEINTRO_CONTENTS .introContent}
+				{HOMEINTRO_CONTENTS.introContent}
 			</Typography>
 			<Grid container spacing = {2}>
 				{isAuthenticated ? (

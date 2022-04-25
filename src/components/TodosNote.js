@@ -16,7 +16,7 @@ import { Typography } from '@mui/material';
 
 const StyledTextField = ({ editable, sx, ...elseProps }) => {
   if (!editable) return (
-    <Typography variant = "body2" sx = {{ py : 0.5, px: 0.5, ...sx}}>
+    <Typography variant = "body2" sx = {{ whiteSpace: 'pre-line', wordBreak: 'break-word', py : 0.5, px: 0.5, ...sx}}>
       {elseProps.value}
     </Typography>
   )
