@@ -20,6 +20,8 @@ import ErrorMessage from '../components/ErrorMessage';
 
 const domain = process.env.REACT_APP_API_DOMAIN;
 
+export const EditingContext = React.createContext(false);
+
 const reducer = ({ _id, changed, notes }, action) => {
 	switch (action.type) {
 		case 'addNote':
@@ -96,6 +98,7 @@ const TodosPage = () => {
 	const [snackbarMessage, setSnackbarMessage] = useState('');
 	const [snackbarSeverity, setSnackbarSeverity] = useState('success');
 	const [state, dispatch] = useReducer(reducer, { _id: null, changed: false, notes: [] });
+	const [editing, setEditing] = useState(false);
 
 	const handleSnackbarClose = (event, reason) => {
     if (reason === 'clickaway') {
@@ -125,13 +128,14 @@ const TodosPage = () => {
 	}
 
 	useEffect(() => {
+		setEditing(false);
 		setIsLoading((previousIsLoading) => previousIsLoading + 1);
 		axios.get(`${domain}/todos/${targetUsername}`)
 			.then((response) => {
 				dispatch({ type: 'init', payload: { initialState: response.data }})
 				setIsError(false);
 				setIsLoading((previousIsLoading) => previousIsLoading - 1);
-				document.activeElement?.blur();
+				setTimeout(() => setEditing(true), 1000);
 			})
 			.catch((error) => {
 				setIsError(true);
@@ -148,7 +152,7 @@ const TodosPage = () => {
 	}
 
 	return (
-		<>
+		<EditingContext.Provider value = {editing}>
 			<Box sx = {{ overflowY: 'auto', p: 2 }}>
 				<Masonry columns = {{ xs: 1, smd: 2, lg: 3, xl: 4 }} spacing = {2} sx = {{ m: 0 }}>
 					{
@@ -188,7 +192,7 @@ const TodosPage = () => {
 					</>
 				)
 			}
-		</>
+		</EditingContext.Provider>
 	);
 };
 

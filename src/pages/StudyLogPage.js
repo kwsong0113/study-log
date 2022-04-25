@@ -142,7 +142,7 @@ const StudyLogPage = () => {
 		}
 	}, [filteredData]);
 
-	const minDate = useMemo(() => (filteredData.length ? new Date(filteredData[0].date) : new Date()), [filteredData]);
+	const minDate = useMemo(() => (filteredData.length ? new Date(filteredData[filteredData.length - 1].date) : new Date()), [filteredData]);
 
 	const formatDate = (date) => {
 		return new Date(date.getTime() - 60000 * date.getTimezoneOffset()).toISOString();

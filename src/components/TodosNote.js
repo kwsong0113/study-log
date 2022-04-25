@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useLayoutEffect, useContext } from 'react';
 
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -14,14 +14,28 @@ import CheckCircleOutlinedIcon from '@mui/icons-material/CheckCircleOutlined';
 import BuildCircleOutlinedIcon from '@mui/icons-material/BuildCircleOutlined';
 import { Typography } from '@mui/material';
 
+import { EditingContext } from '../pages/TodosPage';
+
 const StyledTextField = ({ editable, sx, ...elseProps }) => {
+  const ref = useRef();
+  const editing = useContext(EditingContext);
+
+  useLayoutEffect(() => {
+    if (editing) {
+      setTimeout(() => {
+        ref.current?.scrollIntoView({ block: 'center', behavior: 'smooth' })
+        ref.current?.focus();
+      }, 1);
+    }
+  }, []);
+
   if (!editable) return (
     <Typography variant = "body2" sx = {{ whiteSpace: 'pre-line', wordBreak: 'break-word', py : 0.5, px: 0.5, ...sx}}>
       {elseProps.value}
     </Typography>
   )
   return (
-    <TextField {...elseProps} multiline variant = "filled" inputProps = {{ autoFocus: true, spellCheck: false }}
+    <TextField {...elseProps} multiline variant = "filled" inputProps = {{ ref: ref, spellCheck: false }}
       sx = {{
         '& .MuiInputBase-root': {
           '&::before': { border: 'none', },
