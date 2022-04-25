@@ -12,7 +12,6 @@ import IconButton from '@mui/material/IconButton';
 import SummarizeOutlinedIcon from '@mui/icons-material/SummarizeOutlined';
 import StarBorderOutlinedIcon from '@mui/icons-material/StarBorderOutlined';
 import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlined';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 
 import LoadingBox from '../components/LoadingBox';

@@ -10,7 +10,6 @@ import { useTheme, alpha } from '@mui/material/styles';
 
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkModeOutlined';
-import NoteAltIcon from '@mui/icons-material/NoteAlt';
 import OpacityOutlinedIcon from '@mui/icons-material/OpacityOutlined';
 import AddLinkIcon from '@mui/icons-material/AddLink';
 

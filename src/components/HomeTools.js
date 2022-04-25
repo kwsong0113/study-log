@@ -8,7 +8,6 @@ import EventAvailableOutlinedIcon from '@mui/icons-material/EventAvailableOutlin
 import ColorLensOutlinedIcon from '@mui/icons-material/ColorLensOutlined';
 import PhoneIphoneOutlinedIcon from '@mui/icons-material/PhoneIphoneOutlined';
 import OfflineBoltOutlinedIcon from '@mui/icons-material/OfflineBoltOutlined';
-import { OfflineBoltRounded } from '@mui/icons-material';
 
 const HOMETOOLS_CONENT1 = [
 	{
