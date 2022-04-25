@@ -17,7 +17,7 @@ import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import LoadingBox from '../components/LoadingBox';
 import ErrorMessage from '../components/ErrorMessage';
 import StyledLink from '../components/StyledLink';
-import UserDataProvider, { UserDataContext } from '../components/UserDataProvider';
+import { UserDataContext } from '../components/UserDataProvider';
 
 const domain = process.env.REACT_APP_API_DOMAIN;
 
