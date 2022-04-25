@@ -1,6 +1,5 @@
 const CACHE_NAME = 'slog-pwa';
 const urlsToCache = [
-  'index.html',
   'offline.html',
   './images/icon-192x192.png',
   './images/icon-192x192-1.png',
@@ -24,7 +23,7 @@ self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request)
       .then((response) => {
-        if (event.request.destination === 'image') {
+        if (response) {
           return response;
         }
         return fetch(event.request)

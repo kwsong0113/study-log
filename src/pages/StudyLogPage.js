@@ -49,7 +49,7 @@ const StyledButton = styled((props) => (
 
 const getTodayISOString = () => {
 	const today = new Date();
-	return new Date(new Date(today.toLocaleDateString()).getTime() - today.getTimezoneOffset() * 60000).toISOString();
+	return new Date(new Date(today.toDateString()).getTime() - today.getTimezoneOffset() * 60000).toISOString();
 }
 
 const StudyLogPage = () => {
