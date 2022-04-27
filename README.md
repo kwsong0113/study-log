@@ -1,70 +1,145 @@
-# Getting Started with Create React App
+<div id = "top"></div>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<div align="center">
+  <a href="https://studylog.netlify.app/">
+    <img src="public/images/icon-256x256.png" alt="Logo" width="100" height="100">
+  </a>
 
-## Available Scripts
+  <h3 align="center" style = "margin-top: 5px;">SLog</h3>
 
-In the project directory, you can run:
+  <p align="center">
+    An easy-to-use web app that offers various study tools
+    <br />
+    <a href="https://studylog.netlify.app/"><strong>Explore the app »</strong></a>
+    <br />
+    <br />
+    <a href="https://github.com/kwsong0113/study-log-api">Backend Repo</a>
+    ·
+    <a href="https://github.com/kwsong0113/study-log/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/kwsong0113/study-log/issues">Request Feature</a>
+  </p>
+</div>
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#app-summary">App Summary</a>
+      <ul>
+        <li><a href="#tools">Tools</a></li>
+        <li><a href="#main-functionalities">Main Functionalities</a></li>
+        <li><a href="#features">Features</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#versions--changelogs">Versions & Changelogs</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+## About The Project
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+There are many great note taking, to-do list apps such as EverNote, OneNote, and Google Tasks, but they didn't perfectly suit my needs. I wanted to create a simple study app that I can easily use on a daily basis.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+_I focused on three points while developing SLog:_
+* Simple, concise, and beautiful UI
+* Sharable, accessible on any device
+* Provide convenient and easy-to-use tools that can help studying efficiently
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Built With
 
-### `npm run eject`
+#### Frameworks / Libraries / Database
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+[<img align="left" alt="React" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" style="padding-right:10px;" />](https://reactjs.org/)
+[<img align="left" alt="MUI" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/materialui/materialui-original.svg" style="padding-right:10px;" />](https://mui.com/)
+[<img align="left" alt="Node.js" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" style="padding-right:10px;" />](https://nodejs.org/)
+[<img align="left" alt="Express.js" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" style="padding-right:10px;" />](https://expressjs.com/)
+[<img align="left" alt="MongoDB" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" style="padding-right:10px;" />](https://mongodb.com/)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br/>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Design / Authentication / Deployment
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+[<img align="left" alt="Figma" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg" style="padding-right:10px;" />](https://Figma.com/)
+[<img align="left" alt="Auth0" width="26px" src="https://www.svgrepo.com/show/305761/auth0.svg" style="padding-right:10px;" />](https://auth0.com/)
+[<img align="left" alt="Heroku" width="26px" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/heroku/heroku-original.svg" style="padding-right:10px;" />](https://heroku.com/)
+[<img align="left" alt="Netlify" width="26px" src="https://api.iconify.design/logos/netlify.svg" style="padding-right:10px;" />](https://netlify.com/)
 
-## Learn More
+<br />
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## App Summary
 
-### Code Splitting
+#### Tools
+* Study Log
+  * Summarize what you learned and write it as a concise study log everyday
+* Todos
+  * Takes notes, Create a study plan, to-do list and learning goals
+* Community
+  * Can view other's study logs and todos
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+#### Main Functionalities
+* Study Log Editor
+  * A real-time study log editor that works similarly to Markdown
+* Date Selector
+  * If a user selects a date on the calendar, scroll to the selected date's study log
+* Subject Filter
+  * Only show study logs related to the selected subject
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+#### Features
+* Fully responsive design
+* Customizable theme UI
+* Sharable & accessible on any device
+* Installable PWA
 
-### Making a Progressive Web App
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-### Advanced Configuration
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+#### Examples
+<img alt = "community" height = "200px" style = "border: 1px solid lightgrey;" src = "./screenshots/screenshot_community.png">
+<img alt = "todos" height = "200px" style = "border: 1px solid lightgrey; margin: 0 10px;" src = "./screenshots/screenshot_todos.png">
+<img alt = "studylog" height = "200px" style = "border: 1px solid lightgrey;" src = "./screenshots/screenshot_studylog.png">
 
-### Deployment
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+## Versions & Changelogs
+#### 0.0.0 (April 26, 2022)
+* Initial public release
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Contact
+
+#### Email
+* Kiwhan Song - kiwhan@mit.edu / helloing.develop@gmail.com
+
+#### GitHub Repositories
+* Frontend: https://github.com/kwsong0113/study-log
+* Backend: https://github.com/kwsong0113/study-log-api
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+## Acknowledgments
+
+* [React Docs](https://reactjs.org/)
+* [Mui Docs](https://mui.com/)
+* [Building a REST API with Express, Node, and MongoDB](https://www.mongodb.com/languages/express-mongodb-rest-api-tutorial)
+* [Markdown Guide](https://www.markdownguide.org/)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
