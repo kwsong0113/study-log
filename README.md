@@ -109,16 +109,6 @@ _I focused on three points while developing SLog:_
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-## Usage
-
-#### Examples
-<img alt = "community" height = "200px" style = "border: 1px solid lightgrey;" src = "./screenshots/screenshot_community.png">
-<img alt = "todos" height = "200px" style = "border: 1px solid lightgrey; margin: 0 10px;" src = "./screenshots/screenshot_todos.png">
-<img alt = "studylog" height = "200px" style = "border: 1px solid lightgrey;" src = "./screenshots/screenshot_studylog.png">
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
 ## Versions & Changelogs
 #### 0.0.0 (April 26, 2022)
 * Initial public release
