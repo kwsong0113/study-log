@@ -40,7 +40,6 @@
         <li><a href="#features">Features</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
     <li><a href="#versions--changelogs">Versions & Changelogs</a></li>
     <li><a href="#contact">Contact</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
@@ -112,6 +111,9 @@ _I focused on three points while developing SLog:_
 ## Versions & Changelogs
 #### 0.0.0 (April 26, 2022)
 * Initial public release
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
 
 ## Contact
 
